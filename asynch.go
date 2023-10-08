@@ -4,20 +4,19 @@ import (
 	"sync"
 )
 
-type Promise struct{
-  promiseChannel chan (Any);
-  result Any;
-  resolved bool;
+type Promise struct {
+	promiseChannel chan (Any)
+	result         Any
+	resolved       bool
 }
-
 
 ///async
 func promise(function func(Any) Any, payload Any) Promise {
 	promiseChannel := make(chan Any)
-	var promiseGroup sync.WaitGroup;
-	promiseGroup.Add(1);
-	go asyncRun(function, payload, promiseChannel, &promiseGroup);
-	return Promise{promiseChannel:promiseChannel,result:nil,resolved:false};
+	var promiseGroup sync.WaitGroup
+	promiseGroup.Add(1)
+	go asyncRun(function, payload, promiseChannel, &promiseGroup)
+	return Promise{promiseChannel: promiseChannel, result: nil, resolved: false}
 }
 
 func asyncRun(function func(Any) Any, payload Any, promiseChannel chan Any, promiseGroup *sync.WaitGroup) {
@@ -28,9 +27,13 @@ func asyncRun(function func(Any) Any, payload Any, promiseChannel chan Any, prom
 
 ///await
 func await(promis Promise) Any {
-	promis.result = <- promis.promiseChannel;
-  promis.resolved = true;
-	return promis.result;
+	if promis.resolved {
+		return promis.result
+	} else {
+		promis.result = <-promis.promiseChannel
+		promis.resolved = true
+		return promis.result
+	}
 }
 
 var asyncMap = extendedMap{Map: object()}
