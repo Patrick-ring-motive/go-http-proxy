@@ -87,13 +87,10 @@ func onRequest(res http.ResponseWriter, req *http.Request) {
 		response = proxyFetch(pathname, req)
 	}
 
-	bodyPromise := promise(async(ioReadAll), response)
-
+	bodyPromise := ioReadAllPromise(response)
 	proxyResponseHeaders(&res, response, hostTarget, hostProxy)
-
 	res.WriteHeader(response.StatusCode)
-	body := await(bodyPromise)
-	bodyBytes := byteSlicefy(body)
+	bodyBytes := awaitXhttp(bodyPromise)
 	res.Write(bodyBytes)
 
 	if err != nil {

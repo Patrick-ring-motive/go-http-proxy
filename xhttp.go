@@ -69,7 +69,7 @@ func ioReadAllAsyncWrapper(xhr Any) Any {
 	return ioReadAll(xhttp_Responsefy(xhr))
 }
 
-var ioReadAllRefister = asyncRegister(ioReadAll, ioReadAllAsyncWrapper)
+var ioReadAllRegister = asyncRegister(ioReadAll, ioReadAllAsyncWrapper)
 
 func erres(res http.ResponseWriter, errString string) {
 	http.Error(res, errString, http.StatusInternalServerError)
