@@ -1,0 +1,16 @@
+func ioReadAll(response *http.Response, bodyChannel chan []byte, ioReader *sync.WaitGroup){
+  defer ioReader.Done();
+  defer response.Body.Close();
+  bodyBytes,err := io.ReadAll(response.Body);
+  if (err != nil) {
+    defer console.log("error", err);
+		bodyChannel <- []byte(err.Error());	
+	}
+  defer func() {
+    if r := recover(); r != nil {        
+        defer console.log("Unhandled Exception:\n", r);
+        bodyChannel <- []byte(toString(r));	
+    }
+  }();
+  bodyChannel <- bodyBytes;
+}

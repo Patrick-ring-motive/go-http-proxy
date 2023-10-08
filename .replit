@@ -1,0 +1,15 @@
+run = ["make", "run"]
+entrypoint = "main.go"
+hidden = ["Makefile", "main"]
+
+[languages.go]
+pattern = "**/*.go"
+
+[languages.go.languageServer]
+start = "gopls"
+
+[nix]
+channel = "stable-21_11"
+
+[gitHubImport]
+requiredFiles = [".replit", "replit.nix"]
