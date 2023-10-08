@@ -128,7 +128,7 @@ func fetch(request Any)  (*http.Response){
       response.Status="500 Unhandled Exception: "+toString(r);
     }
   }();
-  if(rand.Intn(100)==0){resetFetchClient(fetchClientId);}
+  if(rand.Intn(100)==1){resetFetchClient(fetchClientId);}
   return response;
 }
 
