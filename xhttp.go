@@ -4,7 +4,6 @@ import (
 	"io"
 	"net/http"
 	"strings"
-	"unsafe"
 )
 
 type createObject struct {
@@ -21,34 +20,6 @@ var create = createObject{
 	},
 }
 
-func xhttp_ResponsefyUnsafe(x *Any) *http.Response {
-	return (*http.Response)(unsafe.Pointer(x))
-}
-
-func xhttp_Responsefy(x Any) *http.Response {
-	switch xhr := x.(type) {
-	case *http.Response:
-		return xhr
-	case http.Response:
-		return &xhr
-	default:
-		return xhttp_ResponsefyUnsafe(&x)
-	}
-}
-
-func byteSlicefyUnsafe(b Any) []byte {
-	return *(*[]byte)(unsafe.Pointer(&b))
-}
-
-func byteSlicefy(bite Any) []byte {
-	switch b := bite.(type) {
-	case []byte:
-		return b
-	default:
-		return byteSlicefyUnsafe(b)
-	}
-}
-
 func ioReadAll(response *http.Response) []byte {
 	defer response.Body.Close()
 	bodyBytes, err := io.ReadAll(response.Body)
@@ -59,17 +30,11 @@ func ioReadAll(response *http.Response) []byte {
 	defer func() {
 		if r := recover(); r != nil {
 			defer console.log("Unhandled Exception:\n", r)
-			bodyBytes = []byte(toString(r))
+			bodyBytes = []byte("Unhandled Exception")
 		}
 	}()
 	return bodyBytes
 }
-
-func ioReadAllAsyncWrapper(xhr Any) Any {
-	return ioReadAll(xhttp_Responsefy(xhr))
-}
-
-var ioReadAllRegister = asyncRegister(ioReadAll, ioReadAllAsyncWrapper)
 
 func erres(res http.ResponseWriter, errString string) {
 	http.Error(res, errString, http.StatusInternalServerError)

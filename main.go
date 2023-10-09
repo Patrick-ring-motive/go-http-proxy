@@ -99,7 +99,7 @@ func onRequest(res http.ResponseWriter, req *http.Request) {
 	}
 	defer func() {
 		if r := recover(); r != nil {
-			erres(res, "Unhandled Exception: "+toString(r))
+			erres(res, "Unhandled Exception")
 			console.log("Unhandled Exception:\n", r)
 		}
 	}()

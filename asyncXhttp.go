@@ -34,7 +34,7 @@ func ioReadAllAsync(response *http.Response, px PromiseXhttp) {
 	defer func() {
 		if r := recover(); r != nil {
 			defer console.log("Unhandled Exception:\n", r)
-			px.result = []byte(toString(r))
+			px.result = []byte("Unhandled Exception")
 			px.resolved = true
 			px.promiseChannel <- px.result
 		}
