@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"strings"
+  . "main/submodules"
 )
 
 var tmpl, err = template.ParseGlob("templates/*")
@@ -68,7 +69,7 @@ func onRequest(res http.ResponseWriter, req *http.Request) {
 				req.URL.RequestURI(),
 				"?hostname="+req.Host, "", -1),
 			"&hostname="+req.Host, "", -1)
-	response := proxyFetch(pathname, req)
+	response := ProxyFetch(pathname, req)
 
 	for i := 0; i < hostTargetList_length; i++ {
 		if response.StatusCode < 400 {
@@ -84,22 +85,22 @@ func onRequest(res http.ResponseWriter, req *http.Request) {
 					req.URL.RequestURI(),
 					"?hostname="+req.Host, "", -1),
 				"&hostname="+req.Host, "", -1)
-		response = proxyFetch(pathname, req)
+		response = ProxyFetch(pathname, req)
 	}
 
-	bodyPromise := ioReadAllPromise(response)
-	proxyResponseHeaders(&res, response, hostTarget, hostProxy)
+	bodyPromise := IoReadAllPromise(response)
+	ProxyResponseHeaders(&res, response, hostTarget, hostProxy)
 	res.WriteHeader(response.StatusCode)
-	bodyBytes := awaitXhttp(bodyPromise)
+	bodyBytes := AwaitXhttp(bodyPromise)
 	res.Write(bodyBytes)
 
 	if err != nil {
-		erres(res, err.Error())
+		Erres(res, err.Error())
 		return
 	}
 	defer func() {
 		if r := recover(); r != nil {
-			erres(res, "Unhandled Exception")
+			Erres(res, "Unhandled Exception")
 			console.log("Unhandled Exception:\n", r)
 		}
 	}()
