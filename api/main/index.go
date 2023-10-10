@@ -3,7 +3,7 @@ package handler
 import (
 	. "fmt"
 	"html/template"
-	. "main/api/main/_pkg"
+	. "main/api/main/pkg"
 	"net/http"
 	"strings"
 )
