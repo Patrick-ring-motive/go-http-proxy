@@ -6,10 +6,10 @@ Mostly additions to mirror certain JavaScript syntax.
 */
 import (
 	. "fmt"
-  . "net/http"
+  "net/http"
 )
 
-func ObjectServerlessRequest(responseWriter ResponseWriter, request *Request){
+func ObjectServerlessRequest(responseWriter http.ResponseWriter, request *http.Request){
   ReflectRequest(&responseWriter, request)
 }
 

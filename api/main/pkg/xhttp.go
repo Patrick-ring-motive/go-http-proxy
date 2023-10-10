@@ -3,7 +3,7 @@ package submodules
 import (
 	. "fmt"
 	"io"
-	. "net/http"
+	"net/http"
 	"strings"
 	"sync"
 	. "unsafe"
@@ -12,7 +12,7 @@ import (
 var s = Let(sync.Mutex{})
 
 
-func HttpServerlessRequest(responseWriter ResponseWriter, request *Request){
+func HttpServerlessRequest(responseWriter http.ResponseWriter, request *http.Request){
   ReflectRequest(&responseWriter, request)
 }
 
@@ -24,12 +24,12 @@ func CreateRequest(method string, url string, body io.Reader) *Request {
 	return request
 }
 
-func ErrorResponse(res ResponseWriter, errString string) {
+func ErrorResponse(res http.ResponseWriter, errString string) {
 	Error(res, errString, StatusInternalServerError)
 	Print(errString)
 }
 
-func ReflectRequest(responseWriter *ResponseWriter, request *Request) {
+func ReflectRequest(responseWriter *http.ResponseWriter, request *http.Request) {
 	requestHeaders := request.Header
 	for key, val := range requestHeaders {
 		for i := 0; i < len(val); i++ {
@@ -41,7 +41,7 @@ func ReflectRequest(responseWriter *ResponseWriter, request *Request) {
 
 }
 
-func TransferRequestHeaders(req *Request) {
+func TransferRequestHeaders(req *http.Request) {
 	reqHeaders := req.Header
 	for key, val := range reqHeaders {
 		for i := 0; i < len(val); i++ {
@@ -50,7 +50,7 @@ func TransferRequestHeaders(req *Request) {
 	}
 }
 
-func ProxyResponseHeaders(res *ResponseWriter, response *Response, hostTarget string, hostProxy string) {
+func ProxyResponseHeaders(res *http.ResponseWriter, response *http.Response, hostTarget string, hostProxy string) {
 	responseHeaders := response.Header
 	for key, val := range responseHeaders {
 		for i := 0; i < len(val); i++ {
@@ -70,7 +70,7 @@ var fetchClient = Client{}
 var fetchClientInUseBy uintptr = 0
 var requestInit = CreateRequest("GET", "/", io.NopCloser(strings.NewReader("")))
 
-func Fetch(request *Request) *Response {
+func Fetch(request *http.Request) *http.Response {
 	fetchClientId := uintptr(Pointer(request))
 	fetchClientInUseBy = fetchClientId
 	client := fetchClient
@@ -95,7 +95,7 @@ func Fetch(request *Request) *Response {
 	return response
 }
 
-func FetchURL(url string) *Response {
+func FetchURL(url string) *http.Response {
 	body := io.NopCloser(strings.NewReader(""))
 	request := CreateRequest("GET", url, body)
 	return Fetch(request)
@@ -116,14 +116,14 @@ func resetFetchClient(id uintptr) {
 	}
 }
 
-func ProxyFetch(url string, req *Request) *Response {
+func ProxyFetch(url string, req *http.Request) *http.Response {
 	request := CreateRequest(req.Method, url, req.Body)
 	TransferRequestHeaders(request)
 	response := Fetch(request)
 	return response
 }
 
-func IoReadAll(response *Response) []byte {
+func IoReadAll(response *http.Response) []byte {
 	defer response.Body.Close()
 	bodyBytes, err := io.ReadAll(response.Body)
 	if err != nil {
@@ -182,7 +182,7 @@ func AsyncIoReadAll(response *Response) PromiseIoReadAll {
 	return promise
 }
 
-func GoIoReadAllAsync(response *Response, promise PromiseIoReadAll) PromiseIoReadAll {
+func GoIoReadAllAsync(response *http.Response, promise PromiseIoReadAll) PromiseIoReadAll {
 	defer response.Body.Close()
 	bodyBytes, err := io.ReadAll(response.Body)
 	if err != nil {
