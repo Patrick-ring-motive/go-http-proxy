@@ -1,4 +1,4 @@
-import('/groxy/injects.js');
+import('/groxy/injects-js.js');
 
 function P() {
     let t = document.querySelector(".js-header");

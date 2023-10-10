@@ -31,7 +31,7 @@ func writeClientList() {
 		Print(err.Error())
 	}
 	injectjs := []byte(clientTargetList + string(injectTemplate))
-	err = ioutil.WriteFile("api/groxy/injects.js", injectjs, 0644)
+	err = ioutil.WriteFile("api/groxy/injects-js.js", injectjs, 0644)
 	if err != nil {
 		Print(err.Error())
 	}
@@ -45,8 +45,8 @@ func main() {
 		"/static/frontend/frontend.js",
 		"/static/frontend/frontend.min.css",
 		"/tour/static/css/app.css",
-		"/groxy/injects.js",
-		"/groxy/injects.css",
+		"/groxy/injects-js.js",
+		"/groxy/injects-css.css",
     "/sw.js"}
 	divertList_length := len(divertList)
 	for i := 0; i < divertList_length; i++ {
