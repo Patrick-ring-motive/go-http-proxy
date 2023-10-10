@@ -3,13 +3,13 @@ package submodules
 import (
 	"math/rand"
 	"time"
-  . "net/http"
+ "net/http"
 )
 
 // This class is the laziest imaginable half attempt at generating "random numbers"
 // Faster than other randoms but do not use if you need true randomness.
 
-func ChanceServerlessRequest(responseWriter ResponseWriter, request *Request){
+func ChanceServerlessRequest(responseWriter http.ResponseWriter, request *http.Request){
   ReflectRequest(&responseWriter, request)
 }
 
