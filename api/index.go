@@ -4,7 +4,7 @@ import (
 	. "fmt"
 	"html/template"
 	. "main/api/_pkg"
-	. "net/http"
+	"net/http"
 	"strings"
 )
 
@@ -23,12 +23,12 @@ var hostTargetList = []string{
 var hostTargetList_length = len(hostTargetList)
 
 
-func OnServerlessRequest(responseWriter ResponseWriter, request *Request){
+func OnServerlessRequest(responseWriter http.ResponseWriter, request *http.Request){
   HandleRequest(&responseWriter, request)
 }
 
 
-func HandleRequest(responseWriter *ResponseWriter, request *Request) {
+func HandleRequest(responseWriter *http.ResponseWriter, request *http.Request) {
 	hostTarget := hostTargetList[0]
 	hostProxy := request.Host
 	if request.URL.Query().Has("hostname") {
