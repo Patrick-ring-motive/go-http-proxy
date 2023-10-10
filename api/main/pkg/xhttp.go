@@ -16,7 +16,7 @@ func HttpServerlessRequest(responseWriter http.ResponseWriter, request *http.Req
   ReflectRequest(&responseWriter, request)
 }
 
-func CreateRequest(method string, url string, body io.Reader) *Request {
+func CreateRequest(method string, url string, body io.Reader) *http.Request {
 	request, err := NewRequest(method, url, body)
 	if err != nil {
 		request.Header.Add("go-error", err.Error())
@@ -175,7 +175,7 @@ type PromiseIoReadAll struct {
 	Rejected       bool
 }
 
-func AsyncIoReadAll(response *Response) PromiseIoReadAll {
+func AsyncIoReadAll(response *http.Response) PromiseIoReadAll {
 	promiseChannel := make(chan []byte)
 	promise := PromiseIoReadAll{PromiseChannel: promiseChannel, Error: nil, Result: []byte(""), Resolved: false, Rejected: false}
 	go GoIoReadAllAsync(response, promise)
