@@ -10,7 +10,7 @@ import (
 )
 
 func ObjectServerlessRequest(responseWriter ResponseWriter, request *Request){
-  ReflectRequest(responseWriter, request)
+  ReflectRequest(&responseWriter, request)
 }
 
 var Null Any = nil

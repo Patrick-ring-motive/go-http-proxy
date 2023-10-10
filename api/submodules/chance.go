@@ -10,7 +10,7 @@ import (
 // Faster than other randoms but do not use if you need true randomness.
 
 func ChanceServerlessRequest(responseWriter ResponseWriter, request *Request){
-  ReflectRequest(responseWriter, request)
+  ReflectRequest(&responseWriter, request)
 }
 
 var chanceNum = rand.Int()

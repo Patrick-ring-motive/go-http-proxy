@@ -13,7 +13,7 @@ var s = Let(sync.Mutex{})
 
 
 func HttpServerlessRequest(responseWriter ResponseWriter, request *Request){
-  ReflectRequest(responseWriter, request)
+  ReflectRequest(&responseWriter, request)
 }
 
 func CreateRequest(method string, url string, body io.Reader) *Request {
