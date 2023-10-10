@@ -25,7 +25,7 @@ func CreateRequest(method string, url string, body io.Reader) *http.Request {
 }
 
 func ErrorResponse(res http.ResponseWriter, errString string) {
-	Error(res, errString, http.-StatusInternalServerError)
+	Error(res, errString, http.StatusInternalServerError)
 	Print(errString)
 }
 
