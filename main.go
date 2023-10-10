@@ -1,11 +1,12 @@
 package main
 
 import (
+	. "fmt"
 	"html/template"
 	"io/ioutil"
-	"net/http"
+	. "main/submodules"
+	. "net/http"
 	"strings"
-  . "main/submodules"
 )
 
 var tmpl, err = template.ParseGlob("templates/*")
@@ -27,14 +28,14 @@ func writeClientList() {
 	clientTargetList = " globalThis.hostTargetList = ['" + clientTargetList + "'];"
 	injectTemplate, err := ioutil.ReadFile("diverts/groxy/inject-template.js")
 	if err != nil {
-		console.log(err.Error())
+		Print(err.Error())
 	}
 	injectjs := []byte(clientTargetList + string(injectTemplate))
 	err = ioutil.WriteFile("diverts/groxy/injects.js", injectjs, 0644)
 	if err != nil {
-		console.log(err.Error())
+		Print(err.Error())
 	}
-	console.log(clientTargetList)
+	Print(clientTargetList)
 }
 
 func main() {
@@ -48,60 +49,60 @@ func main() {
 		"/groxy/injects.css"}
 	divertList_length := len(divertList)
 	for i := 0; i < divertList_length; i++ {
-		http.Handle(divertList[i], http.FileServer(http.Dir("diverts")))
+		Handle(divertList[i], FileServer(Dir("diverts")))
 	}
-	http.HandleFunc("/", onRequest)
-	http.HandleFunc("/search*", onRequest)
-	http.ListenAndServe(":0", nil)
-	console.log("http server up!")
+	HandleFunc("/", onRequest)
+	HandleFunc("/search*", onRequest)
+	ListenAndServe(":0", nil)
+	Print("http server up!")
 }
 
-func onRequest(res http.ResponseWriter, req *http.Request) {
+func onRequest(res ResponseWriter, request *Request) {
 	hostTarget := hostTargetList[0]
-	hostProxy := req.Host
-	if req.URL.Query().Has("hostname") {
-		hostTarget = req.URL.Query().Get("hostname")
+	hostProxy := request.Host
+	if request.URL.Query().Has("hostname") {
+		hostTarget = request.URL.Query().Get("hostname")
 	}
-	req.Host = hostTarget
+	request.Host = hostTarget
 	pathname := "https://" + hostTarget +
 		strings.Replace(
 			strings.Replace(
-				req.URL.RequestURI(),
-				"?hostname="+req.Host, "", -1),
-			"&hostname="+req.Host, "", -1)
-	response := ProxyFetch(pathname, req)
+				request.URL.RequestURI(),
+				"?hostname="+request.Host, "", -1),
+			"&hostname="+request.Host, "", -1)
+	response := ProxyFetch(pathname, request)
 
 	for i := 0; i < hostTargetList_length; i++ {
 		if response.StatusCode < 400 {
 			break
 		}
-		if req.Host == hostTargetList[i] {
+		if request.Host == hostTargetList[i] {
 			continue
 		}
-		req.Host = hostTargetList[i]
+		request.Host = hostTargetList[i]
 		pathname = "https://" + hostTargetList[i] +
 			strings.Replace(
 				strings.Replace(
-					req.URL.RequestURI(),
-					"?hostname="+req.Host, "", -1),
-				"&hostname="+req.Host, "", -1)
-		response = ProxyFetch(pathname, req)
+					request.URL.RequestURI(),
+					"?hostname="+request.Host, "", -1),
+				"&hostname="+request.Host, "", -1)
+		response = ProxyFetch(pathname, request)
 	}
 
-	bodyPromise := IoReadAllPromise(response)
+	bodyPromise := AsyncIoReadAll(response)
 	ProxyResponseHeaders(&res, response, hostTarget, hostProxy)
 	res.WriteHeader(response.StatusCode)
-	bodyBytes := AwaitXhttp(bodyPromise)
+	bodyBytes, err := AwaitIoReadAll(bodyPromise)
 	res.Write(bodyBytes)
 
 	if err != nil {
-		Erres(res, err.Error())
+		ErrorResponse(res, err.Error())
 		return
 	}
 	defer func() {
 		if r := recover(); r != nil {
-			Erres(res, "Unhandled Exception")
-			console.log("Unhandled Exception:\n", r)
+			ErrorResponse(res, "Unhandled Exception")
+			Print("Unhandled Exception:\n", r)
 		}
 	}()
 }

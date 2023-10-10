@@ -7,17 +7,12 @@ import (
 // This class is the laziest imaginable half attempt at generating "random numbers"
 // Faster than other randoms but do not use if you need true randomness.
 
-type chanceClass struct {
-	Int  func() int
-	Intn func(int) int
+func randomizerInt(n unsafe.Pointer) {
+
 }
 
-func randomizerInt(n unsafe.Pointer){
-  
-}
-
-func goRandomizerInt(n unsafe.Pointer){
-  go randomizerInt(n)
+func goRandomizerInt(n unsafe.Pointer) {
+	go randomizerInt(n)
 }
 
 func intifyUnsafe(i Any) int {
@@ -33,19 +28,17 @@ func intify(ant Any) int {
 	}
 }
 
+func Int() int {
+	n := 1
+	xn := unsafe.Pointer(&n)
+	goRandomizerInt(xn)
+	yn := (int(uintptr(xn)) % n)
+	return yn
+}
 
-var chance = chanceClass{
-	Int: func() int {
-		n := 1
-		xn := unsafe.Pointer(&n)
-        goRandomizerInt(xn)
-    yn := (int(uintptr(xn))%n)
-    return yn
-	},
-	Intn: func(n int) int {
-		xn := unsafe.Pointer(&n)
-    goRandomizerInt(xn)
-    yn := (int(uintptr(xn))%n)
-    return yn
-	},
+func Intn(n int) int {
+	xn := unsafe.Pointer(&n)
+	goRandomizerInt(xn)
+	yn := (int(uintptr(xn)) % n)
+	return yn
 }
