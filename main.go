@@ -4,7 +4,7 @@ import (
 	. "fmt"
 	"html/template"
   "io/ioutil"
-	. "main/api"
+	. "main/api/main"
 	. "net/http"
 	"strings"
 )
@@ -52,13 +52,13 @@ func main() {
 	for i := 0; i < divertList_length; i++ {
 		Handle(divertList[i], FileServer(Dir("api")))
 	}
-	HandleFunc("/", onRequest)
-	HandleFunc("/search*", onRequest)
+	HandleFunc("/", OnRequest)
+	HandleFunc("/search*", OnRequest)
 	ListenAndServe(":0", nil)
 	Print("http server up!")
 }
 
-func onRequest(responseWriter ResponseWriter, request *Request){
+func OnRequest(responseWriter ResponseWriter, request *Request){
   HandleRequest(&responseWriter, request)
 }
 
