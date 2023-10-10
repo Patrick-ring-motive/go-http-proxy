@@ -25,7 +25,7 @@ func CreateRequest(method string, url string, body io.Reader) *http.Request {
 }
 
 func ErrorResponse(res http.ResponseWriter, errString string) {
-	Error(res, errString, http.StatusInternalServerError)
+	http.Error(res, errString, http.StatusInternalServerError)
 	Print(errString)
 }
 
@@ -66,7 +66,7 @@ func ProxyResponseHeaders(res *http.ResponseWriter, response *http.Response, hos
 	(*res).Header().Add("access-control-allow-origin", "*")
 }
 
-var fetchClient = Client{}
+var fetchClient = http.Client{}
 var fetchClientInUseBy uintptr = 0
 var requestInit = CreateRequest("GET", "/", io.NopCloser(strings.NewReader("")))
 
@@ -109,7 +109,7 @@ func releaseFetchClient(id uintptr) {
 
 func resetFetchClient(id uintptr) {
 	fetchClient.CloseIdleConnections()
-	nextClient := Client{}
+	nextClient := http.Client{}
 	if (fetchClientInUseBy == id) || (fetchClientInUseBy == 0) {
 		fetchClient = nextClient
 		fetchClientInUseBy = 0
