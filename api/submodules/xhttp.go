@@ -11,6 +11,11 @@ import (
 
 var s = Let(sync.Mutex{})
 
+
+func HttpServerlessRequest(responseWriter ResponseWriter, request *Request){
+  ReflectRequest(responseWriter, request)
+}
+
 func CreateRequest(method string, url string, body io.Reader) *Request {
 	request, err := NewRequest(method, url, body)
 	if err != nil {
@@ -22,6 +27,27 @@ func CreateRequest(method string, url string, body io.Reader) *Request {
 func ErrorResponse(res ResponseWriter, errString string) {
 	Error(res, errString, StatusInternalServerError)
 	Print(errString)
+}
+
+func ReflectRequest(responseWriter *ResponseWriter, request *Request) {
+	requestHeaders := request.Header
+	for key, val := range requestHeaders {
+		for i := 0; i < len(val); i++ {
+			(*res).Header().Add(key, val[i])
+		}
+	}
+  	(*responseWriter).WriteHeader(200)
+  	(*responseWriter).Write([]bytes(Sprint(*request)))
+  if err != nil {
+		ErrorResponse(*responseWriter, err.Error())
+		return
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			ErrorResponse(*responseWriter, "Unhandled Exception")
+			Print("Unhandled Exception:\n", r)
+		}
+	}()
 }
 
 func TransferRequestHeaders(req *Request) {

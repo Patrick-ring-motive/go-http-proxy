@@ -6,7 +6,12 @@ Mostly additions to mirror certain JavaScript syntax.
 */
 import (
 	. "fmt"
+  . "net/http"
 )
+
+func ObjectServerlessRequest(responseWriter ResponseWriter, request *Request){
+  ReflectRequest(responseWriter, request)
+}
 
 var Null Any = nil
 
