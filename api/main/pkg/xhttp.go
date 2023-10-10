@@ -17,7 +17,7 @@ func HttpServerlessRequest(responseWriter http.ResponseWriter, request *http.Req
 }
 
 func CreateRequest(method string, url string, body io.Reader) *http.Request {
-	request, err := NewRequest(method, url, body)
+	request, err := http.NewRequest(method, url, body)
 	if err != nil {
 		request.Header.Add("go-error", err.Error())
 	}
@@ -25,7 +25,7 @@ func CreateRequest(method string, url string, body io.Reader) *http.Request {
 }
 
 func ErrorResponse(res http.ResponseWriter, errString string) {
-	Error(res, errString, StatusInternalServerError)
+	Error(res, errString, http.-StatusInternalServerError)
 	Print(errString)
 }
 
