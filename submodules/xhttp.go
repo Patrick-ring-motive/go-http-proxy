@@ -9,6 +9,8 @@ import (
 	. "unsafe"
 )
 
+var s = Let(sync.Mutex{})
+
 func CreateRequest(method string, url string, body io.Reader) *Request {
 	request, err := NewRequest(method, url, body)
 	if err != nil {
@@ -120,6 +122,34 @@ func IoReadAll(response *Response) []byte {
 	return bodyBytes
 }
 
+type ThreadIoReadAll struct {
+	ThreadChannel chan ([]byte)
+	Lock          *PromiseIoReadAll
+}
+
+var Unlocked = &PromiseIoReadAll{PromiseChannel:nil, Error: nil, Result: []byte(""), Resolved: false, Rejected: false}
+
+func NewThreadIoReadAll()ThreadIoReadAll{
+  threadChannel := make(chan ([]byte))
+  thread := ThreadIoReadAll{ThreadChannel: threadChannel, Lock: Unlocked}
+  return thread
+}
+
+var ThreadPoolIoReadAll = []ThreadIoReadAll{}
+
+func initializeThreadPool(numThreads int) []ThreadIoReadAll {
+	ThreadPoolIoReadAll = make([]ThreadIoReadAll, numThreads)
+  for i := range ThreadPoolIoReadAll {
+        ThreadPoolIoReadAll[i] = NewThreadIoReadAll()
+  }
+	return ThreadPoolIoReadAll
+}
+
+func goInitializeThreadPool(numThreads int) []ThreadIoReadAll {
+	go initializeThreadPool(numThreads)
+	return ThreadPoolIoReadAll
+}
+
 type PromiseIoReadAll struct {
 	PromiseChannel chan ([]byte)
 	Error          error
@@ -130,8 +160,6 @@ type PromiseIoReadAll struct {
 
 func AsyncIoReadAll(response *Response) PromiseIoReadAll {
 	promiseChannel := make(chan []byte)
-	var promiseGroup sync.WaitGroup
-	promiseGroup.Add(1)
 	promise := PromiseIoReadAll{PromiseChannel: promiseChannel, Error: nil, Result: []byte(""), Resolved: false, Rejected: false}
 	go GoIoReadAllAsync(response, promise)
 	return promise

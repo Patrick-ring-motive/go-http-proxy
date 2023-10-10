@@ -1,44 +1,39 @@
 package submodules
 
 import (
-	"unsafe"
+	"math/rand"
+	"time"
 )
 
 // This class is the laziest imaginable half attempt at generating "random numbers"
 // Faster than other randoms but do not use if you need true randomness.
 
-func randomizerInt(n unsafe.Pointer) {
+var chanceNum = rand.Int()
 
+var chancego = goChancer()
+var sleeper time.Duration = 1
+
+func goChancer() int {
+	go chancer()
+	return 0
 }
 
-func goRandomizerInt(n unsafe.Pointer) {
-	go randomizerInt(n)
-}
-
-func intifyUnsafe(i Any) int {
-	return *(*int)(unsafe.Pointer(&i))
-}
-
-func intify(ant Any) int {
-	switch i := ant.(type) {
-	case int:
-		return i
-	default:
-		return intifyUnsafe(i)
+func chancer() {
+	for true {
+		chanceNum = rand.Int()
+		time.Sleep(sleeper * time.Nanosecond)
+		sleeper=(sleeper*2)%1000000
 	}
 }
 
 func Int() int {
-	n := 1
-	xn := unsafe.Pointer(&n)
-	goRandomizerInt(xn)
-	yn := (int(uintptr(xn)) % n)
-	return yn
+	sleeper = 1
+	return chanceNum
+
 }
 
 func Intn(n int) int {
-	xn := unsafe.Pointer(&n)
-	goRandomizerInt(xn)
-	yn := (int(uintptr(xn)) % n)
-	return yn
+	sleeper = 1
+	return chanceNum % n
+
 }

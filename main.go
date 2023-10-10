@@ -46,7 +46,8 @@ func main() {
 		"/static/frontend/frontend.min.css",
 		"/tour/static/css/app.css",
 		"/groxy/injects.js",
-		"/groxy/injects.css"}
+		"/groxy/injects.css",
+    "/sw.js"}
 	divertList_length := len(divertList)
 	for i := 0; i < divertList_length; i++ {
 		Handle(divertList[i], FileServer(Dir("diverts")))

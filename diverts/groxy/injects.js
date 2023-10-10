@@ -83,7 +83,7 @@ async function transformLinks(attr){
     pkgs = document.querySelectorAll('['+attr+'^="'+window.location.origin+'"]:not(['+attr+'*="hostname="],['+attr+'$="tour"],['+attr+'$="tour/"],[backup])');
     pkgs_length = pkgs.length;
     for(let x=0;x<pkgs_length;x++){
-      await backupNode(pkgs[i]);
+      await backupNode(pkgs[x]);
       let hash='';
       if(pkgs[x][attr].includes('#')){hash='#'+pkgs[x][attr].split('#')[1];}
       let char='?';
