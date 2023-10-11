@@ -40,11 +40,16 @@ func ReflectRequest(responseWriter *http.ResponseWriter, request *http.Request) 
 
 }
 
-func TransferRequestHeaders(req *http.Request) {
-	reqHeaders := req.Header
+func TransferRequestHeaders(newRequest *http.Request,oldRequest *http.Request) {
+	reqHeaders := oldRequest.Header
+  hostOld := oldRequest.Host
+  hostNew := newRequest.Host
 	for key, val := range reqHeaders {
 		for i := 0; i < len(val); i++ {
-			req.Header.Add(key, val[i])
+			newRequest.Header.Add(key, strings.Replace(val[i],
+					hostOld,
+					hostNew,
+					-1))
 		}
 	}
 }
@@ -64,6 +69,8 @@ func ProxyResponseHeaders(res *http.ResponseWriter, response *http.Response, hos
 	(*res).Header().Del("content-security-policy")
 	(*res).Header().Set("access-control-allow-origin", "*")
 }
+
+
 
 var fetchClient = http.Client{}
 var fetchClientInUseBy uintptr = 0
@@ -117,7 +124,7 @@ func resetFetchClient(id uintptr) {
 
 func ProxyFetch(url string, req *http.Request) *http.Response {
 	request := CreateRequest(req.Method, url, req.Body)
-	TransferRequestHeaders(request)
+	TransferRequestHeaders(request,req)
 	response := Fetch(request)
 	return response
 }
