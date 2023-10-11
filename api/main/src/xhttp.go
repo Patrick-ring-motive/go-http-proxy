@@ -187,6 +187,7 @@ func AwaitIoReadAll(promise PromiseIoReadAll) ([]byte, error) {
 
 /***************IO Read All Thread Structure************************/
 
+/*
 type ThreadIoReadAll struct {
 	ThreadChannel chan (*http.Response)
 	Lock          PromiseIoReadAll
@@ -283,3 +284,4 @@ func AwaitThreadIoReadAll(thread ThreadIoReadAll) ([]byte, error) {
 		return promise.Result, promise.Error
 	}
 }
+*/
