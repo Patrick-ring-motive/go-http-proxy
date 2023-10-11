@@ -2,8 +2,6 @@ package indexgo
 
 import (
 	. "fmt"
-	"google.golang.org/appengine"
-	"google.golang.org/appengine/urlfetch"
 	. "handler/api/main/src"
 	"html/template"
 	"net/http"
@@ -94,15 +92,8 @@ var repoRoot = "https://raw.githubusercontent.com/Patrick-ring-motive/go-http-pr
 
 func RepoFetch(responseWriter *http.ResponseWriter, request *http.Request) {
 	uri := request.URL.RequestURI()
-	ctx := appengine.NewContext(request)
-	client := urlfetch.Client(ctx)
   url:=repoRoot + uri
-	response, err := client.Get(url)
-
-	if err != nil {
-		ErrorResponse(*responseWriter, err.Error())
-		return
-	}
+	response := FetchURL(url)
 
 	bodyPromise := AsyncIoReadAll(response)
 	contentType := "text/html"
