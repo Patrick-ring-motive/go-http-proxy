@@ -1,4 +1,4 @@
-package index
+package indexgo
 
 import (
 	. "fmt"
