@@ -90,13 +90,14 @@ func HandleRequest(responseWriter *http.ResponseWriter, request *http.Request) {
 	}()
 }
 
-var repoRoot = "https://raw.githubusercontent.com/Patrick-ring-motive/go-http-proxy/main/api/"
+var repoRoot = "https://raw.githubusercontent.com/Patrick-ring-motive/go-http-proxy/main/api"
 
 func RepoFetch(responseWriter *http.ResponseWriter, request *http.Request) {
 	uri := request.URL.RequestURI()
 	ctx := appengine.NewContext(request)
 	client := urlfetch.Client(ctx)
-	response, err := client.Get(repoRoot + uri)
+  url:=repoRoot + uri
+	response, err := client.Get(url)
 
 	if err != nil {
 		ErrorResponse(*responseWriter, err.Error())
