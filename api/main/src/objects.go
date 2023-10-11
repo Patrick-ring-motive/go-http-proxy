@@ -6,11 +6,11 @@ Mostly additions to mirror certain JavaScript syntax.
 */
 import (
 	. "fmt"
-  "net/http"
+	"net/http"
 )
 
-func ObjectServerlessRequest(responseWriter http.ResponseWriter, request *http.Request){
-  ReflectRequest(&responseWriter, request)
+func ObjectServerlessRequest(responseWriter http.ResponseWriter, request *http.Request) {
+	ReflectRequest(&responseWriter, request)
 }
 
 var Null Any = nil
@@ -44,7 +44,7 @@ type AnyObject struct {
 	properties map[string]*Any
 }
 
-func Let(Any)Any {return nil}
+func Let(Any) Any { return nil }
 
 func ToString(str Any) string {
 	return Sprint(str)

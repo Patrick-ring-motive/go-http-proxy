@@ -11,9 +11,8 @@ import (
 
 var s = Let(sync.Mutex{})
 
-
-func HttpServerlessRequest(responseWriter http.ResponseWriter, request *http.Request){
-  ReflectRequest(&responseWriter, request)
+func HttpServerlessRequest(responseWriter http.ResponseWriter, request *http.Request) {
+	ReflectRequest(&responseWriter, request)
 }
 
 func CreateRequest(method string, url string, body io.Reader) *http.Request {
@@ -36,8 +35,8 @@ func ReflectRequest(responseWriter *http.ResponseWriter, request *http.Request) 
 			(*responseWriter).Header().Add(key, val[i])
 		}
 	}
-  	(*responseWriter).WriteHeader(200)
-  	(*responseWriter).Write([]byte(Sprint(*request)))
+	(*responseWriter).WriteHeader(200)
+	(*responseWriter).Write([]byte(Sprint(*request)))
 
 }
 
@@ -50,20 +49,20 @@ func TransferRequestHeaders(req *http.Request) {
 	}
 }
 
-func ProxyResponseHeaders(res *http.ResponseWriter, response *http.Response, hostTarget string, hostProxy string) {
+func ProxyResponseHeaders(res *http.ResponseWriter, response *http.Response, hostOld string, hostNew string) {
 	responseHeaders := response.Header
 	for key, val := range responseHeaders {
 		for i := 0; i < len(val); i++ {
 			(*res).Header().Add(key,
 				strings.Replace(val[i],
-					hostTarget,
-					hostProxy,
+					hostOld,
+					hostNew,
 					-1))
 		}
 	}
 	(*res).Header().Del("x-frame-options")
 	(*res).Header().Del("content-security-policy")
-	(*res).Header().Add("access-control-allow-origin", "*")
+	(*res).Header().Set("access-control-allow-origin", "*")
 }
 
 var fetchClient = http.Client{}
@@ -144,21 +143,21 @@ type ThreadIoReadAll struct {
 	Lock          *PromiseIoReadAll
 }
 
-var Unlocked = &PromiseIoReadAll{PromiseChannel:nil, Error: nil, Result: []byte(""), Resolved: false, Rejected: false}
+var Unlocked = &PromiseIoReadAll{PromiseChannel: nil, Error: nil, Result: []byte(""), Resolved: false, Rejected: false}
 
-func NewThreadIoReadAll()ThreadIoReadAll{
-  threadChannel := make(chan ([]byte))
-  thread := ThreadIoReadAll{ThreadChannel: threadChannel, Lock: Unlocked}
-  return thread
+func NewThreadIoReadAll() ThreadIoReadAll {
+	threadChannel := make(chan ([]byte))
+	thread := ThreadIoReadAll{ThreadChannel: threadChannel, Lock: Unlocked}
+	return thread
 }
 
 var ThreadPoolIoReadAll = []ThreadIoReadAll{}
 
 func initializeThreadPool(numThreads int) []ThreadIoReadAll {
 	ThreadPoolIoReadAll = make([]ThreadIoReadAll, numThreads)
-  for i := range ThreadPoolIoReadAll {
-        ThreadPoolIoReadAll[i] = NewThreadIoReadAll()
-  }
+	for i := range ThreadPoolIoReadAll {
+		ThreadPoolIoReadAll[i] = NewThreadIoReadAll()
+	}
 	return ThreadPoolIoReadAll
 }
 

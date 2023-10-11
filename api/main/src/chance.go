@@ -2,15 +2,15 @@ package submodules
 
 import (
 	"math/rand"
+	"net/http"
 	"time"
- "net/http"
 )
 
 // This class is the laziest imaginable half attempt at generating "random numbers"
 // Faster than other randoms but do not use if you need true randomness.
 
-func ChanceServerlessRequest(responseWriter http.ResponseWriter, request *http.Request){
-  ReflectRequest(&responseWriter, request)
+func ChanceServerlessRequest(responseWriter http.ResponseWriter, request *http.Request) {
+	ReflectRequest(&responseWriter, request)
 }
 
 var chanceNum = rand.Int()
@@ -27,7 +27,7 @@ func chancer() {
 	for true {
 		chanceNum = rand.Int()
 		time.Sleep(sleeper * time.Nanosecond)
-		sleeper=(sleeper*2)%1000000
+		sleeper = (sleeper * 2) % 1000000
 	}
 }
 

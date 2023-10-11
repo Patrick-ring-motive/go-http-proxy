@@ -2,29 +2,15 @@ package main
 
 import (
 	. "fmt"
-	"html/template"
-  "io/ioutil"
 	. "handler/api/main"
+	"io/ioutil"
 	. "net/http"
 	"strings"
 )
 
-var tmpl, err = template.ParseGlob("templates/*")
-var hostTargetList = []string{
-	"go.dev",
-	"pkg.go.dev",
-	"golang.org",
-	"learn.go.dev",
-	"play.golang.org",
-	"proxy.golang.org",
-	"sum.golang.org",
-	"index.golang.org",
-	"tour.golang.org",
-	"blog.golang.org"}
-var hostTargetList_length = len(hostTargetList)
 
 func writeClientList() {
-	clientTargetList := strings.Join([]string(hostTargetList), "','")
+	clientTargetList := strings.Join([]string(HostTargetList), "','")
 	clientTargetList = " globalThis.hostTargetList = ['" + clientTargetList + "'];"
 	injectTemplate, err := ioutil.ReadFile("api/groxy/inject-template.js")
 	if err != nil {
@@ -40,17 +26,9 @@ func writeClientList() {
 
 func main() {
 	go writeClientList()
-	divertList := []string{"/js/site.js",
-		"/css/styles.css",
-		"/static/frontend/frontend.js",
-		"/static/frontend/frontend.min.css",
-		"/tour/static/css/app.css",
-		"/groxy/injects-js.js",
-		"/groxy/injects-css.css",
-    "/sw.js"}
-	divertList_length := len(divertList)
-	for i := 0; i < divertList_length; i++ {
-		Handle(divertList[i], FileServer(Dir("api")))
+
+	for i := 0; i < DivertList_length; i++ {
+		Handle(DivertList[i], FileServer(Dir("api")))
 	}
 	HandleFunc("/", OnRequest)
 	HandleFunc("/search*", OnRequest)
@@ -58,7 +36,6 @@ func main() {
 	Print("http server up!")
 }
 
-func OnRequest(responseWriter ResponseWriter, request *Request){
-  HandleRequest(&responseWriter, request)
+func OnRequest(responseWriter ResponseWriter, request *Request) {
+	HandleRequest(&responseWriter, request)
 }
-

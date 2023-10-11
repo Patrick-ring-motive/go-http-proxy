@@ -1,6 +1,6 @@
 { pkgs, legacyPolygott }: {
     deps = [
-        pkgs.go_1_17
+        pkgs.go_1_19
         pkgs.gopls
     ] ++ legacyPolygott;
 }

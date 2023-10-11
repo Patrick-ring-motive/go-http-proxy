@@ -2,14 +2,16 @@ package indexgo
 
 import (
 	. "fmt"
-	"html/template"
+	"google.golang.org/appengine"
+	"google.golang.org/appengine/urlfetch"
 	. "handler/api/main/src"
+	"html/template"
 	"net/http"
 	"strings"
 )
 
 var tmpl, err = template.ParseGlob("templates/*")
-var hostTargetList = []string{
+var HostTargetList = []string{
 	"go.dev",
 	"pkg.go.dev",
 	"golang.org",
@@ -20,16 +22,26 @@ var hostTargetList = []string{
 	"index.golang.org",
 	"tour.golang.org",
 	"blog.golang.org"}
-var hostTargetList_length = len(hostTargetList)
 
+var HostTargetList_length = len(HostTargetList)
 
-func OnServerlessRequest(responseWriter http.ResponseWriter, request *http.Request){
-  HandleRequest(&responseWriter, request)
+var DivertList = []string{"/js/site.js",
+	"/css/styles.css",
+	"/static/frontend/frontend.js",
+	"/static/frontend/frontend.min.css",
+	"/tour/static/css/app.css",
+	"/groxy/injects-js.js",
+	"/groxy/injects-css.css",
+	"/sw.js"}
+
+var DivertList_length = len(DivertList)
+
+func OnServerlessRequest(responseWriter http.ResponseWriter, request *http.Request) {
+	HandleRequest(&responseWriter, request)
 }
 
-
 func HandleRequest(responseWriter *http.ResponseWriter, request *http.Request) {
-	hostTarget := hostTargetList[0]
+	hostTarget := HostTargetList[0]
 	hostProxy := request.Host
 	if request.URL.Query().Has("hostname") {
 		hostTarget = request.URL.Query().Get("hostname")
@@ -43,15 +55,15 @@ func HandleRequest(responseWriter *http.ResponseWriter, request *http.Request) {
 			"&hostname="+request.Host, "", -1)
 	response := ProxyFetch(pathname, request)
 
-	for i := 0; i < hostTargetList_length; i++ {
+	for i := 0; i < HostTargetList_length; i++ {
 		if response.StatusCode < 400 {
 			break
 		}
-		if request.Host == hostTargetList[i] {
+		if request.Host == HostTargetList[i] {
 			continue
 		}
-		request.Host = hostTargetList[i]
-		pathname = "https://" + hostTargetList[i] +
+		request.Host = HostTargetList[i]
+		pathname = "https://" + HostTargetList[i] +
 			strings.Replace(
 				strings.Replace(
 					request.URL.RequestURI(),
@@ -64,7 +76,7 @@ func HandleRequest(responseWriter *http.ResponseWriter, request *http.Request) {
 	ProxyResponseHeaders(responseWriter, response, hostTarget, hostProxy)
 	(*responseWriter).WriteHeader(response.StatusCode)
 	bodyBytes, err := AwaitIoReadAll(bodyPromise)
-	(*responseWriter).Write(bodyBytes)
+	defer (*responseWriter).Write(bodyBytes)
 
 	if err != nil {
 		ErrorResponse(*responseWriter, err.Error())
@@ -76,4 +88,43 @@ func HandleRequest(responseWriter *http.ResponseWriter, request *http.Request) {
 			Print("Unhandled Exception:\n", r)
 		}
 	}()
+}
+
+var repoRoot = "https://raw.githubusercontent.com/Patrick-ring-motive/go-http-proxy/main/api/"
+
+func RepoFetch(responseWriter *http.ResponseWriter, request *http.Request) {
+	uri := request.URL.RequestURI()
+	ctx := appengine.NewContext(request)
+	client := urlfetch.Client(ctx)
+	response, err := client.Get(repoRoot + uri)
+
+	if err != nil {
+		ErrorResponse(*responseWriter, err.Error())
+		return
+	}
+
+	bodyPromise := AsyncIoReadAll(response)
+	contentType := "text/html"
+	if strings.Contains(uri, ".css") {
+		contentType = "text/css"
+	}
+	if strings.Contains(uri, ".js") {
+		contentType = "text/javascript"
+	}
+	(*responseWriter).WriteHeader(response.StatusCode)
+	(*responseWriter).Header().Del("x-frame-options")
+	(*responseWriter).Header().Del("content-security-policy")
+	(*responseWriter).Header().Set("access-control-allow-origin", "*")
+	(*responseWriter).Header().Set("content-type", contentType)
+	bodyBytes, err := AwaitIoReadAll(bodyPromise)
+
+  defer (*responseWriter).Write(bodyBytes)
+
+	if err != nil {
+		ErrorResponse(*responseWriter, err.Error())
+		return
+	}
+
+	
+
 }

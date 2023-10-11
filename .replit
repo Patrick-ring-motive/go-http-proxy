@@ -9,7 +9,7 @@ pattern = "**/*.go"
 start = "gopls"
 
 [nix]
-channel = "stable-21_11"
+channel = "stable-23_05"
 
 [gitHubImport]
 requiredFiles = [".replit", "replit.nix"]
