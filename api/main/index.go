@@ -95,7 +95,7 @@ func RepoFetch(responseWriter *http.ResponseWriter, request *http.Request) {
   url:=repoRoot + uri
 	response := FetchURL(url)
 
-	bodyPromise := AsyncIoReadAll(response)
+	bodyPromise := AsyncThreadIoReadAll(response)
 	contentType := "text/html"
 	if strings.Contains(uri, ".css") {
 		contentType = "text/css"
@@ -108,7 +108,7 @@ func RepoFetch(responseWriter *http.ResponseWriter, request *http.Request) {
 	(*responseWriter).Header().Del("content-security-policy")
 	(*responseWriter).Header().Set("access-control-allow-origin", "*")
 	(*responseWriter).Header().Set("content-type", contentType)
-	bodyBytes, err := AwaitIoReadAll(bodyPromise)
+	bodyBytes, err := AwaitThreadIoReadAll(bodyPromise)
 
   defer (*responseWriter).Write(bodyBytes)
 

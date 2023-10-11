@@ -40,16 +40,16 @@ func ReflectRequest(responseWriter *http.ResponseWriter, request *http.Request) 
 
 }
 
-func TransferRequestHeaders(newRequest *http.Request,oldRequest *http.Request) {
+func TransferRequestHeaders(newRequest *http.Request, oldRequest *http.Request) {
 	reqHeaders := oldRequest.Header
-  hostOld := oldRequest.Host
-  hostNew := newRequest.Host
+	hostOld := oldRequest.Host
+	hostNew := newRequest.Host
 	for key, val := range reqHeaders {
 		for i := 0; i < len(val); i++ {
 			newRequest.Header.Add(key, strings.Replace(val[i],
-					hostOld,
-					hostNew,
-					-1))
+				hostOld,
+				hostNew,
+				-1))
 		}
 	}
 }
@@ -69,8 +69,6 @@ func ProxyResponseHeaders(res *http.ResponseWriter, response *http.Response, hos
 	(*res).Header().Del("content-security-policy")
 	(*res).Header().Set("access-control-allow-origin", "*")
 }
-
-
 
 var fetchClient = http.Client{}
 var fetchClientInUseBy uintptr = 0
@@ -124,11 +122,12 @@ func resetFetchClient(id uintptr) {
 
 func ProxyFetch(url string, req *http.Request) *http.Response {
 	request := CreateRequest(req.Method, url, req.Body)
-	TransferRequestHeaders(request,req)
+	TransferRequestHeaders(request, req)
 	response := Fetch(request)
 	return response
 }
 
+/******************IO Read All Promise Structures*************************/
 func IoReadAll(response *http.Response) []byte {
 	defer response.Body.Close()
 	bodyBytes, err := io.ReadAll(response.Body)
@@ -145,34 +144,6 @@ func IoReadAll(response *http.Response) []byte {
 	return bodyBytes
 }
 
-type ThreadIoReadAll struct {
-	ThreadChannel chan ([]byte)
-	Lock          *PromiseIoReadAll
-}
-
-var Unlocked = &PromiseIoReadAll{PromiseChannel: nil, Error: nil, Result: []byte(""), Resolved: false, Rejected: false}
-
-func NewThreadIoReadAll() ThreadIoReadAll {
-	threadChannel := make(chan ([]byte))
-	thread := ThreadIoReadAll{ThreadChannel: threadChannel, Lock: Unlocked}
-	return thread
-}
-
-var ThreadPoolIoReadAll = []ThreadIoReadAll{}
-
-func initializeThreadPool(numThreads int) []ThreadIoReadAll {
-	ThreadPoolIoReadAll = make([]ThreadIoReadAll, numThreads)
-	for i := range ThreadPoolIoReadAll {
-		ThreadPoolIoReadAll[i] = NewThreadIoReadAll()
-	}
-	return ThreadPoolIoReadAll
-}
-
-func goInitializeThreadPool(numThreads int) []ThreadIoReadAll {
-	go initializeThreadPool(numThreads)
-	return ThreadPoolIoReadAll
-}
-
 type PromiseIoReadAll struct {
 	PromiseChannel chan ([]byte)
 	Error          error
@@ -184,11 +155,11 @@ type PromiseIoReadAll struct {
 func AsyncIoReadAll(response *http.Response) PromiseIoReadAll {
 	promiseChannel := make(chan []byte)
 	promise := PromiseIoReadAll{PromiseChannel: promiseChannel, Error: nil, Result: []byte(""), Resolved: false, Rejected: false}
-	go GoIoReadAllAsync(response, promise)
+	go GoIoReadAll(response, promise)
 	return promise
 }
 
-func GoIoReadAllAsync(response *http.Response, promise PromiseIoReadAll) PromiseIoReadAll {
+func GoIoReadAll(response *http.Response, promise PromiseIoReadAll) PromiseIoReadAll {
 	defer response.Body.Close()
 	bodyBytes, err := io.ReadAll(response.Body)
 	if err != nil {
@@ -209,6 +180,105 @@ func AwaitIoReadAll(promise PromiseIoReadAll) ([]byte, error) {
 	if promise.Resolved || promise.Rejected {
 		return promise.Result, promise.Error
 	} else {
+		promise.Result = <-promise.PromiseChannel
+		return promise.Result, promise.Error
+	}
+}
+
+/***************IO Read All Thread Structure************************/
+
+type ThreadIoReadAll struct {
+	ThreadChannel chan (*http.Response)
+	Lock          PromiseIoReadAll
+}
+
+var Unlocked = PromiseIoReadAll{PromiseChannel: nil, Error: nil, Result: []byte(""), Resolved: false, Rejected: false}
+
+func UnlockThread(thread ThreadIoReadAll) {
+	thread.Lock = Unlocked
+}
+
+func NewThreadIoReadAll() ThreadIoReadAll {
+	threadChannel := make(chan (*http.Response))
+	thread := ThreadIoReadAll{ThreadChannel: threadChannel, Lock: Unlocked}
+	go StartThreadIoReadAll(thread)
+	return thread
+}
+
+var ThreadPoolIoReadAll = []ThreadIoReadAll{}
+var GoThreadPoolIoReadAll = goInitializeThreadPool(10)
+
+func initializeThreadPool(numThreads int) []ThreadIoReadAll {
+  threadPoolIoReadAll := make([]ThreadIoReadAll, numThreads)
+	
+	for i := range ThreadPoolIoReadAll {
+		threadPoolIoReadAll[i] = NewThreadIoReadAll()
+	}
+  ThreadPoolIoReadAll = threadPoolIoReadAll
+	return ThreadPoolIoReadAll
+}
+
+func goInitializeThreadPool(numThreads int) []ThreadIoReadAll {
+	go initializeThreadPool(numThreads)
+	return ThreadPoolIoReadAll
+}
+
+func AquireThread(promise PromiseIoReadAll) ThreadIoReadAll {
+  threadPoolIoReadAll := (ThreadPoolIoReadAll)
+	for i := range threadPoolIoReadAll {
+    thread := threadPoolIoReadAll[i]
+		if thread.Lock.PromiseChannel == Unlocked.PromiseChannel {
+      thread.Lock = promise
+      if thread.Lock.PromiseChannel == promise.PromiseChannel{
+			 return thread
+      }
+		}
+	}
+  threadChannel := make(chan (*http.Response))
+  newThread := ThreadIoReadAll{ThreadChannel: threadChannel, Lock: promise}
+  threadPoolIoReadAll=append(threadPoolIoReadAll,newThread)
+  ThreadPoolIoReadAll= threadPoolIoReadAll
+	return newThread
+}
+
+func StartThreadIoReadAll(thread ThreadIoReadAll) {
+  for true{
+	response := <-thread.ThreadChannel
+	GoThreadIoReadAll(response, thread.Lock)
+    }
+}
+
+func AsyncThreadIoReadAll(response *http.Response) ThreadIoReadAll {
+  promiseChannel := make(chan []byte)
+	promise := PromiseIoReadAll{PromiseChannel: promiseChannel, Error: nil, Result: []byte(""), Resolved: false, Rejected: false}
+	thread := AquireThread(promise)
+	thread.ThreadChannel <- response
+	return thread
+}
+
+func GoThreadIoReadAll(response *http.Response, promise PromiseIoReadAll) PromiseIoReadAll {
+	defer response.Body.Close()
+	bodyBytes, err := io.ReadAll(response.Body)
+	if err != nil {
+		defer Print("error", err)
+		promise.Result = []byte(err.Error())
+		promise.Rejected = true
+		promise.Error = err
+		promise.PromiseChannel <- promise.Result
+		return promise
+	}
+	promise.Result = bodyBytes
+	promise.Resolved = true
+	promise.PromiseChannel <- promise.Result
+	return promise
+}
+
+func AwaitThreadIoReadAll(thread ThreadIoReadAll) ([]byte, error) {
+	promise := thread.Lock
+	if promise.Resolved || promise.Rejected {
+		return promise.Result, promise.Error
+	} else {
+		defer UnlockThread(thread)
 		promise.Result = <-promise.PromiseChannel
 		return promise.Result, promise.Error
 	}
