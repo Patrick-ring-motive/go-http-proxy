@@ -1,12 +1,8 @@
 package handler
 
 import (
-	. "fmt"
-	"html/template"
-  "io/ioutil"
 	. "handler/api/main"
 	"net/http"
-	"strings"
 )
 
 
