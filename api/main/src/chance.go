@@ -15,7 +15,7 @@ func ChanceServerlessRequest(responseWriter http.ResponseWriter, request *http.R
 
 var chanceNum = rand.Int()
 
-var chancego = goChancer()
+//var chancego = goChancer()
 var sleeper time.Duration = 1
 
 func goChancer() int {

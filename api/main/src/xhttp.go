@@ -7,6 +7,7 @@ import (
 	"strings"
 	"sync"
 	. "unsafe"
+  "math/rand"
 )
 
 var s = Let(sync.Mutex{})
@@ -93,7 +94,7 @@ func Fetch(request *http.Request) *http.Response {
 			response.Status = "500 Unhandled Exception: " + Sprint(r)
 		}
 	}()
-	if Intn(100) == 0 {
+	if rand.Intn(100) == 0 {
 		resetFetchClient(fetchClientId)
 	}
 	return response
@@ -125,6 +126,26 @@ func ProxyFetch(url string, req *http.Request) *http.Response {
 	TransferRequestHeaders(request, req)
 	response := Fetch(request)
 	return response
+}
+
+func GetResponseBody(response *http.Response) []byte {
+	defer response.Body.Close()
+	bodyBytes, err := io.ReadAll(response.Body)
+	if err != nil {
+		defer Print("error", err)
+    response.StatusCode = 500
+    response.Status = err.Error()
+		return []byte(response.Status)
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			defer Print("Unhandled Exception:\n", r)
+      response.StatusCode = 500
+      response.Status = Sprint(r)
+			bodyBytes = []byte(response.Status)
+		}
+	}()
+	return bodyBytes
 }
 
 /******************IO Read All Promise Structures*************************/
