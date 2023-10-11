@@ -3,7 +3,7 @@ package index
 import (
 	. "fmt"
 	"html/template"
-	. "handler/api/main/pkg"
+	. "handler/api/main/src"
 	"net/http"
 	"strings"
 )
