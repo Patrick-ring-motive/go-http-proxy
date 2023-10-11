@@ -1,9 +1,9 @@
-package handler
+package index
 
 import (
 	. "fmt"
 	"html/template"
-	. "main/api/main/pkg"
+	. "handler/api/main/pkg"
 	"net/http"
 	"strings"
 )
