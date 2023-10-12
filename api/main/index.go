@@ -25,8 +25,9 @@ var HostTargetList_length = len(HostTargetList)
 
 var DivertList = []string{"/js/site.js",
 	"/css/styles.css",
-                          "/images/favicon-gopher.png",
-                           "/images/favicon-gopher.svg",
+	"/images/favicon-gopher.png",
+	"/images/favicon-gopher.svg",
+	"/static/shared/icon/favicon.ico",
 	"/static/frontend/frontend.js",
 	"/static/frontend/frontend.min.css",
 	"/tour/static/css/app.css",
@@ -75,7 +76,7 @@ func HandleRequest(responseWriter *http.ResponseWriter, request *http.Request) {
 	bodyPromise := AsyncIoReadAll(response)
 	ProxyResponseHeaders(responseWriter, response, hostTarget, hostProxy)
 	(*responseWriter).WriteHeader(response.StatusCode)
-  bodyBytes,err := AwaitIoReadAll(bodyPromise)
+	bodyBytes, err := AwaitIoReadAll(bodyPromise)
 
 	defer (*responseWriter).Write(bodyBytes)
 
@@ -95,7 +96,7 @@ var repoRoot = "https://raw.githubusercontent.com/Patrick-ring-motive/go-http-pr
 
 func RepoFetch(responseWriter *http.ResponseWriter, request *http.Request) {
 	uri := request.URL.RequestURI()
-  url:=repoRoot + uri
+	url := repoRoot + uri
 	response := FetchURL(url)
 
 	bodyPromise := AsyncIoReadAll(response)
@@ -113,13 +114,11 @@ func RepoFetch(responseWriter *http.ResponseWriter, request *http.Request) {
 	(*responseWriter).Header().Set("content-type", contentType)
 	bodyBytes, err := AwaitIoReadAll(bodyPromise)
 
-  defer (*responseWriter).Write(bodyBytes)
+	defer (*responseWriter).Write(bodyBytes)
 
 	if err != nil {
 		ErrorResponse(*responseWriter, err.Error())
 		return
 	}
-
-	
 
 }

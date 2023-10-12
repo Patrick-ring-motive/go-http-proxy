@@ -100,7 +100,7 @@ async function transformLinks(attr){
 }
 
 if(!globalThis.backupElements){globalThis.backupElements={};}
-async function backupNode(element){
+async function backupNode(element){try{
   if(element.tagName.toLowerCase()!='link'){return;}
   if(element.getAttribute('rel')!='stylesheet'){return;}
   if(document.querySelector('[href="'+element.getAttribute('href')+'"][backup]')){
@@ -122,6 +122,9 @@ const promise1 = new Promise((resolve, reject) => {setTimeout(resolve,1000);});
   
   await Promise.race([backup.promise,promise1]) ;
   return;
+}catch(e){
+  return;
+  }
 }
 
 void async function getPrism(){
