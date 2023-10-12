@@ -1,4 +1,4 @@
-if ((!globalThis?.ServiceWorkerGlobalScope) && (navigator?.serviceWorker)) {
+cif ((!globalThis?.ServiceWorkerGlobalScope) && (navigator?.serviceWorker)) {
 
 
 
@@ -377,7 +377,7 @@ if ((!globalThis?.ServiceWorkerGlobalScope) && (navigator?.serviceWorker)) {
           if(respondWithResponse&&(respondWithResponse instanceof Response)){
             event.respondWith(respondWithResponse.clone());
           }else{
-            console.log(respondWithResponse);
+            //console.log(respondWithResponse);
           }
 
           await offFirst;
@@ -468,7 +468,7 @@ if ((!globalThis?.ServiceWorkerGlobalScope) && (navigator?.serviceWorker)) {
           if(respondWithResponse&&(respondWithResponse instanceof Response)){
           event.respondWith(respondWithResponse.clone());
           }else{
-            console.log(respondWithResponse);
+           // console.log(respondWithResponse);
           }
 
           

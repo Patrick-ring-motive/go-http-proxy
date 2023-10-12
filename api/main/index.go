@@ -25,6 +25,8 @@ var HostTargetList_length = len(HostTargetList)
 
 var DivertList = []string{"/js/site.js",
 	"/css/styles.css",
+                          "/images/favicon-gopher.png",
+                           "/images/favicon-gopher.svg",
 	"/static/frontend/frontend.js",
 	"/static/frontend/frontend.min.css",
 	"/tour/static/css/app.css",
