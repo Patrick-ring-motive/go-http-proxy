@@ -73,6 +73,7 @@ func HandleRequest(responseWriter *http.ResponseWriter, request *http.Request) {
 	bodyBytes := GetResponseBody(response)
 	ProxyResponseHeaders(responseWriter, response, hostTarget, hostProxy)
 	(*responseWriter).WriteHeader(response.StatusCode)
+  
 
 	defer (*responseWriter).Write(bodyBytes)
 
