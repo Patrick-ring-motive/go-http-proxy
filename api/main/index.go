@@ -70,10 +70,10 @@ func HandleRequest(responseWriter *http.ResponseWriter, request *http.Request) {
 		response = ProxyFetch(pathname, request)
 	}
 
-	bodyBytes := GetResponseBody(response)
+	bodyPromise := AsyncIoReadAll(response)
 	ProxyResponseHeaders(responseWriter, response, hostTarget, hostProxy)
 	(*responseWriter).WriteHeader(response.StatusCode)
-  
+  bodyBytes,err := AwaitIoReadAll(bodyPromise)
 
 	defer (*responseWriter).Write(bodyBytes)
 
