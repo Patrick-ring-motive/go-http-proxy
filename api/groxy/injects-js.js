@@ -15,6 +15,23 @@ try{
   let scr = document.createElement('script');
   scr.src = '/sw.js';
   document.head.appendChild(scr)
+  
+ // <link rel="icon" href="/images/favicon-gopher.png" sizes="any">
+ //   <link rel="apple-touch-icon" href="/images/favicon-gopher-plain.png">
+ //   <link rel="icon" href="/images/favicon-gopher.svg" type="image/svg+xml">
+    s=document.createElement('link');
+    s.href='/images/favicon-gopher.png';
+    s.setAttribute('rel','icon');
+    s.setAttribute('sizes','any');
+
+    s=document.createElement('link');
+    s.href='/images/favicon-gopher-plain.png';
+    s.setAttribute('rel','apple-touch-icon');
+
+    s=document.createElement('link');
+    s.href='/images/favicon-gopher.svg';
+    s.setAttribute('rel','icon');
+    s.setAttribute('type','image/svg+xml');
 
   void async function(){
     if(document.querySelector('[id="injectcss"]')){return;}
