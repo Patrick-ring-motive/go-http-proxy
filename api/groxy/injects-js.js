@@ -12,6 +12,10 @@ try{
   `;
   document.head.appendChild(s);
 
+  let scr = document.createElement('script');
+  scr.src = '/sw.js';
+  document.head.appendChild(scr)
+
   void async function(){
     if(document.querySelector('[id="injectcss"]')){return;}
       let st=document.createElement('style');
