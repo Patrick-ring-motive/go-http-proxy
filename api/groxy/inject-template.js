@@ -54,7 +54,7 @@ async function transformLinks(attr){
     pkgs = document.querySelectorAll('['+attr+'^="https://'+globalThis.hostTargetList[i]+'"]:not([backup])');
     pkgs_length = pkgs.length;
     for(let x=0;x<pkgs_length;x++){
-      await backupNode(pkgs[i]);
+      await backupNode(pkgs[x]);
       let hash='';
       if(pkgs[x][attr].includes('#')){hash='#'+pkgs[x][attr].split('#')[1];}
       let char='?';
@@ -73,7 +73,7 @@ async function transformLinks(attr){
     pkgs = document.querySelectorAll('['+attr+'$="?hostname=tour.golang.org"]:not([backup])');
     pkgs_length = pkgs.length;
     for(let x=0;x<pkgs_length;x++){
-      await backupNode(pkgs[i]);
+      await backupNode(pkgs[x]);
       let char='?';
       if(pkgs[x][attr].includes('?')){char='&';}
          pkgs[x].setAttribute(attr,
