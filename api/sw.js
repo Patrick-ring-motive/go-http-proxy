@@ -1,4 +1,4 @@
-cif ((!globalThis?.ServiceWorkerGlobalScope) && (navigator?.serviceWorker)) {
+if ((!globalThis?.ServiceWorkerGlobalScope) && (navigator?.serviceWorker)) {
 
 
 
