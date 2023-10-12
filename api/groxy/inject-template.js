@@ -19,19 +19,27 @@ try{
  // <link rel="icon" href="/images/favicon-gopher.png" sizes="any">
  //   <link rel="apple-touch-icon" href="/images/favicon-gopher-plain.png">
  //   <link rel="icon" href="/images/favicon-gopher.svg" type="image/svg+xml">
+
+while(document.querySelector('link[rel*="icon"]')){
+  document.querySelector('link[rel*="icon"]').remove();
+}
+  
     s=document.createElement('link');
     s.href='/images/favicon-gopher.png';
     s.setAttribute('rel','icon');
     s.setAttribute('sizes','any');
+  document.head.appendChild(s)
 
     s=document.createElement('link');
     s.href='/images/favicon-gopher-plain.png';
     s.setAttribute('rel','apple-touch-icon');
+   document.head.appendChild(s)
 
     s=document.createElement('link');
     s.href='/images/favicon-gopher.svg';
     s.setAttribute('rel','icon');
     s.setAttribute('type','image/svg+xml');
+   document.head.appendChild(s)
 
   void async function(){
     if(document.querySelector('[id="injectcss"]')){return;}
