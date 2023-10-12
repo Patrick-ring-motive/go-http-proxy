@@ -107,6 +107,18 @@ func RepoFetch(responseWriter *http.ResponseWriter, request *http.Request) {
 	if strings.Contains(uri, ".js") {
 		contentType = "text/javascript"
 	}
+  	if strings.Contains(uri, ".css") {
+		contentType = "text/css"
+	}
+	if strings.Contains(uri, ".ico") {
+		contentType = "image/x-icon"
+	}
+  if strings.Contains(uri, ".svg") {
+		contentType = "image/svg+xml"
+	}
+  if strings.Contains(uri, ".png") {
+		contentType = "image/png"
+	}
 	(*responseWriter).WriteHeader(response.StatusCode)
 	(*responseWriter).Header().Del("x-frame-options")
 	(*responseWriter).Header().Del("content-security-policy")
