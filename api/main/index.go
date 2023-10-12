@@ -114,7 +114,7 @@ func RepoFetch(responseWriter *http.ResponseWriter, request *http.Request) {
 		contentType = "image/x-icon"
 	}
   if strings.Contains(uri, ".svg") {
-		//contentType = "image/svg+xml"
+		contentType = "image/svg+xml"
 	}
   if strings.Contains(uri, ".png") {
 		contentType = "image/png"
