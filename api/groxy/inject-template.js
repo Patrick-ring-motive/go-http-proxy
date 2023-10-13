@@ -59,6 +59,10 @@ setInterval(async function(){
   await transformLinks('href');
   await transformLinks('src');
   await transformLinks('action');
+try{if(!document.querySelector('.Hero-blurb>h1').innerText.includes('Go Bananas')){
+  document.querySelector('.Hero-blurb>h1').innerText='Go Bananas';
+  document.querySelector('.Hero-blurb>h1').style.visibility='visible';  
+}}catch(e){}
 },100);
 
 
