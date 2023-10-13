@@ -19,6 +19,7 @@ var HostTargetList = []string{
 	"sum.golang.org",
 	"index.golang.org",
 	"tour.golang.org",
+	"play.golang.org",
 	"blog.golang.org"}
 
 var HostTargetList_length = len(HostTargetList)
@@ -107,16 +108,16 @@ func RepoFetch(responseWriter *http.ResponseWriter, request *http.Request) {
 	if strings.Contains(uri, ".js") {
 		contentType = "text/javascript"
 	}
-  	if strings.Contains(uri, ".css") {
+	if strings.Contains(uri, ".css") {
 		contentType = "text/css"
 	}
 	if strings.Contains(uri, ".ico") {
 		contentType = "image/x-icon"
 	}
-  if strings.Contains(uri, ".svg") {
+	if strings.Contains(uri, ".svg") {
 		contentType = "image/svg+xml"
 	}
-  if strings.Contains(uri, ".png") {
+	if strings.Contains(uri, ".png") {
 		contentType = "image/png"
 	}
 	(*responseWriter).WriteHeader(response.StatusCode)
