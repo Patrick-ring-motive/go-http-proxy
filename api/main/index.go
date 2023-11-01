@@ -79,6 +79,7 @@ func HandleRequest(responseWriter *http.ResponseWriter, request *http.Request) {
 	(*responseWriter).WriteHeader(response.StatusCode)
 	bodyBytes, err := AwaitIoReadAll(bodyPromise)
 
+
 	defer (*responseWriter).Write(bodyBytes)
 
 	if err != nil {
@@ -120,6 +121,8 @@ func RepoFetch(responseWriter *http.ResponseWriter, request *http.Request) {
 	if strings.Contains(uri, ".png") {
 		contentType = "image/png"
 	}
+
+  
 	(*responseWriter).WriteHeader(response.StatusCode)
 	(*responseWriter).Header().Del("x-frame-options")
 	(*responseWriter).Header().Del("content-security-policy")
@@ -135,3 +138,4 @@ func RepoFetch(responseWriter *http.ResponseWriter, request *http.Request) {
 	}
 
 }
+

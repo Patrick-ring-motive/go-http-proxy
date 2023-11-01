@@ -56,19 +56,23 @@ func TransferRequestHeaders(newRequest *http.Request, oldRequest *http.Request) 
 }
 
 func ProxyResponseHeaders(res *http.ResponseWriter, response *http.Response, hostOld string, hostNew string) {
+  resHeaders := (*res).Header()
 	responseHeaders := response.Header
 	for key, val := range responseHeaders {
 		for i := 0; i < len(val); i++ {
-			(*res).Header().Add(key,
+      resHeaders.Add(key,
 				strings.Replace(val[i],
 					hostOld,
 					hostNew,
 					-1))
 		}
 	}
-	(*res).Header().Del("x-frame-options")
-	(*res).Header().Del("content-security-policy")
-	(*res).Header().Set("access-control-allow-origin", "*")
+  resHeaderMap := HeaderToMap((*res).Header())
+  delete(resHeaderMap,"X-Frame-Options")
+  delete(resHeaderMap,"Content-Security-Policy")
+  resHeaderMap["Access-Control-Allow-Origin"]=[]string{"*"}
+
+	
 }
 
 var fetchClient = http.Client{}
@@ -206,6 +210,10 @@ func AwaitIoReadAll(promise PromiseIoReadAll) ([]byte, error) {
 	}
 }
 
+
+func HeaderToMap(h http.Header) map[string][]string {
+  return *(* map[string][]string)(Pointer(&h))
+}
 /***************IO Read All Thread Structure************************/
 
 /*
