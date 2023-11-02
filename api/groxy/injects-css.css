@@ -15,3 +15,8 @@ button:not(.Playground button),
   filter: drop-shadow(0 0 0.15rem black);
 }
 
+
+.go-Select{
+  background: unset !important;
+  appearance: unset !important;
+}
