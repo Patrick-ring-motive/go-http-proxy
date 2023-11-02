@@ -16,7 +16,7 @@ button:not(.Playground button),
 }
 
 
-.go-Select{
+html[user-agent*="afari"] .go-Select{
   background: unset !important;
-  appearance: auti !important;
+  appearance: auto !important;
 }

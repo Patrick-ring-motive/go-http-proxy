@@ -56,6 +56,7 @@ window.addEventListener("DOMContentLoaded", (event) => {try{
 
 
 setInterval(async function(){
+  addUserAgent();
   await transformLinks('href');
   await transformLinks('src');
   await transformLinks('action');
@@ -206,5 +207,12 @@ async function getp(){
   
 
 
+  
+}
+
+
+function addUserAgent(){
+let h=document.querySelector('html:not([user-agent])');
+if(h){h.setAttribute('user-agent',navigator.userAgent);}
   
 }
