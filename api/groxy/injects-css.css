@@ -17,6 +17,6 @@ button:not(.Playground button),
 
 
 .go-Select{
-  --webkit-background: unset !important;
-  --webkit-appearance: unset !important;
+  background: unset !important;
+  appearance: auti !important;
 }
