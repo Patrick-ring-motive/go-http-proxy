@@ -10,7 +10,7 @@ import (
   "math/rand"
 )
 
-var s = Let(sync.Mutex{})
+var void = Void(sync.Mutex{})
 
 func HttpServerlessRequest(responseWriter http.ResponseWriter, request *http.Request) {
 	ReflectRequest(&responseWriter, request)
@@ -206,6 +206,7 @@ func AwaitIoReadAll(promise PromiseIoReadAll) ([]byte, error) {
 		return promise.Result, promise.Error
 	} else {
 		promise.Result = <-promise.PromiseChannel
+    close(promise.PromiseChannel)
 		return promise.Result, promise.Error
 	}
 }

@@ -44,7 +44,7 @@ type AnyObject struct {
 	properties map[string]*Any
 }
 
-func Let(Any) Any { return nil }
+func Void(Any) Any { return nil }
 
 func ToString(str Any) string {
 	return Sprint(str)
