@@ -1,4 +1,6 @@
-
+img[alt]{
+  color:white !important;
+}
 
 html{
   filter:hue-rotate(-45deg);
