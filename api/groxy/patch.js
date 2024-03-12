@@ -1,5 +1,6 @@
+window.alert=console.log;
 void async function Patch(){
-  if(!declare){
+  if(!globalThis.declare){
     await import(`https://unpkg.com/javaxscript/framework.js?${new Date().getTime()}`);
   }
   declare(()=>{
