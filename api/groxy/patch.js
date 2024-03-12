@@ -4,7 +4,7 @@ void async function Patch(){
   }
   declare(()=>{
     selectApplyAll('img',el=>{
-      el.updateAttribute('als','🐹');
+      el.updateAttribute('alt','🐹');
     });
   });
 }();
