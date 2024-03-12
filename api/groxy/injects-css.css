@@ -2,6 +2,15 @@ img[alt]{
   color:white !important;
 }
 
+img[natural-width="0"]{
+  display:none;
+}
+
+a:has(img[natural-width="0"])::before{
+  content:"🐹";
+  filter:invert(1) sepia(1) invert(1);
+}
+
 html{
   filter:hue-rotate(-45deg);
 }
