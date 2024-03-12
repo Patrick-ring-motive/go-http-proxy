@@ -6,7 +6,7 @@ img[natural-width="0"]{
   display:none;
 }
 
-a:has(img[natural-width="0"]),img[natural-width="0"] + p::before{
+a:has(img[natural-width="0"])::before,img[natural-width="0"] + p::before,{
   content:"🐹";
   filter:invert(1) sepia(1) invert(1);
 }
