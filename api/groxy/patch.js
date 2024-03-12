@@ -8,4 +8,11 @@ void async function Patch(){
       el.updateAttribute('alt','🐹');
     });
   });
+  declare(()=>{
+    selectApplyAll('img',el=>{
+      if(el.naturalWidth==0){
+        el.style.display='none';
+      }
+    });
+  });
 }();
