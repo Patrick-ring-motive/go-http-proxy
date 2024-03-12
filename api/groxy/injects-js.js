@@ -1,4 +1,5 @@
- globalThis.hostTargetList = ['go.dev','pkg.go.dev','golang.org','learn.go.dev','play.golang.org','proxy.golang.org','sum.golang.org','index.golang.org','tour.golang.org','play.golang.org','blog.golang.org'];
+window.alert=console.log;
+globalThis.hostTargetList = ['go.dev','pkg.go.dev','golang.org','learn.go.dev','play.golang.org','proxy.golang.org','sum.golang.org','index.golang.org','tour.golang.org','play.golang.org','blog.golang.org'];
 import(`/groxy/patch.js?${new Date().getTime()}`);
 if(!globalThis.hostTargetList){
   globalThis.hostTargetList = ["go.dev","pkg.go.dev","learn.go.dev"];
