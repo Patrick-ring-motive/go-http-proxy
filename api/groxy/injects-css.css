@@ -16,6 +16,7 @@ img[natural-width="0"]::before{
 
 img[natural-width="0"]{
   filter:invert(1) sepia(1) invert(1);
+  visibility:hidden;
 }
 
 html{
