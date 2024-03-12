@@ -9,10 +9,8 @@ void async function Patch(){
     });
   });
   declare(()=>{
-    selectApplyAll('img',el=>{
-      if(el.naturalWidth==0){
-        el.style.display='none';
-      }
+    selectApplyAll('img:not([natural-width])',el=>{
+        el.setAttribute('natural-width',el.naturalWidth);
     });
   });
 }();
