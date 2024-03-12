@@ -6,8 +6,15 @@ img[natural-width="0"]{
   display:none;
 }
 
-img[natural-width="0"]::before,a:has(img[natural-width="0"])::before,img[natural-width="0"] + p::before,{
+a:has(img[natural-width="0"])::before,img[natural-width="0"] + p::before,{
   content:"🐹";
+  filter:invert(1) sepia(1) invert(1);
+}
+img[natural-width="0"]::before{
+  content:"🐹";
+}
+
+img[natural-width="0"]{
   filter:invert(1) sepia(1) invert(1);
 }
 
