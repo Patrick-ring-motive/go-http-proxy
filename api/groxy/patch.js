@@ -23,7 +23,7 @@ void async function Patch(){
     queryApplyAll('html[window-location*="/tour/"] [id="left-side"] pre:not(.languade-go)',el=>{
       el.className='language-go';
       el.innerHTML=`<code>${el.innerHTML}</code>`;
-      Prism.highlightAll()
+      Q(()=>Prism.highlightAll());
     });
   });
 }();
