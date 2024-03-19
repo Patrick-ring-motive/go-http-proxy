@@ -2,8 +2,10 @@ img[alt]{
   color:white !important;
 }
 
+:is(html[title*="ackage"],html[window-location*="/doc"],html[window-location*="/ref"]) {}
+
 @media (prefers-color-scheme: dark) {
-  pre[style*="inline-table"],:is(html[title*="ackage"],html[window-location*="/doc/"],html[window-location*="/ref/"]) [highlighted="true"]{
+  pre[style*="inline-table"],[highlighted="true"]{
     filter: invert(1);
   }
 }
