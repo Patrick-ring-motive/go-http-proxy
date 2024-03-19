@@ -9,7 +9,7 @@ img[alt]{
 }
 
 html[window-location*="/blog/"] [class*="language-"]{
-  text-shadow:0px 0px 5px blue !important;
+  color:blue;
 }
 
 .syntax-checkbox{visibility:hidden;}
