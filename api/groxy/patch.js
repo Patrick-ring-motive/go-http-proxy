@@ -13,4 +13,7 @@ void async function Patch(){
         el.setAttribute('natural-width',el.naturalWidth);
     });
   });
+  declare(()=>{
+    queryApplyAll('.syntax-checkbox:not(.active)',el=>el.click());
+  });
 }();
