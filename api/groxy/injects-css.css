@@ -2,8 +2,10 @@ img[alt]{
   color:white !important;
 }
 
-@media (prefers-color-scheme: dark) html[title*="ackage"] [highlighted="true"]{
+@media (prefers-color-scheme: dark) {
+  html[title*="ackage"] [highlighted="true"]{
     filter: invert(1) hue-rotate(180deg);
+  }
 }
 
 img[natural-width="0"]{
