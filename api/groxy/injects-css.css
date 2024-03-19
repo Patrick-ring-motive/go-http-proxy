@@ -8,6 +8,8 @@ img[alt]{
   }
 }
 
+.syntax-checkbox{visibility:hidden;}
+
 img[natural-width="0"]{
   display:none;
 }
