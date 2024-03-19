@@ -4,7 +4,7 @@ img[alt]{
 
 @media (prefers-color-scheme: dark) {
   :is(html[title*="ackage"],html[window-location*="/doc/"]) [highlighted="true"]{
-    filter: invert(1) hue-rotate(180deg);
+    filter: invert(1);
   }
 }
 
