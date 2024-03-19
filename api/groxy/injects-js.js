@@ -172,7 +172,7 @@ setTimeout(function(){getp();},1);
 
 async function getp(){
   if(!globalThis.declare){
-    await import(`https://www.unpkg.com/javaxscript/framework.js?${new Date().getTime()}`);
+   // await import(`https://www.unpkg.com/javaxscript/framework.js?${new Date().getTime()}`);
   }
   let thisLang = 'go';
   let codes=document.querySelectorAll('pre:not([highlighted])');
@@ -187,7 +187,7 @@ async function getp(){
   l.href='https://cdnjs.cloudflare.com/ajax/libs/prism/9000.0.1/themes/prism.min.css';
   l.rel='stylesheet';
   l.id="prismmincss";
-  body().appendChild(l);
+  document.body.appendChild(l);
   }
   
   if(!document.querySelector('[id="prismminjs"]')){
@@ -200,10 +200,10 @@ async function getp(){
     g.src='https://cdnjs.cloudflare.com/ajax/libs/prism/9000.0.1/components/prism-go.min.js';
     g.id="prismgominjs";
     g.onload=function(){Prism.highlightAll();};
-    body().appendChild(g); 
+    document.body.appendChild(g); 
     }  
   };
-  body().appendChild(m);
+  document.body.appendChild(m);
   }
 
 
