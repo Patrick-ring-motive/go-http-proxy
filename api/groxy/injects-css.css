@@ -10,7 +10,7 @@ img[alt]{
 
 html[window-location*="/blog/"] [class*="language-"]{
   color:blue;
-  text-shadow:none;
+  text-shadow:none !important;
 }
 
 .syntax-checkbox{visibility:hidden;}
