@@ -30,7 +30,7 @@ void async function Patch(){
   });
 
   declare(()=>{
-    queryApplyAll('html[window-location*="/tour/"] [id="left-side"] code:not(pre>code)',el=>{
+    queryApplyAll(`:is(html[window-location*="/tour/"] [id="left-side"],html[window-location*="/doc/"],html[window-location*="/ref/"]) code:not(pre>code)`,el=>{
       el.className='language-go';
       el.outerHTML=`<pre class="language-go" style="display:inline-table;margin:0;padding:0;">${el.outerHTML}</pre>`;
       Q(()=>Prism.highlightAll());
