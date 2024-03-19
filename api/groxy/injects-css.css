@@ -10,6 +10,7 @@ img[alt]{
 
 html[window-location*="/blog/"] [class*="language-"]{
   color:blue;
+  background-color:rgba(0,0,0,0) !important;
   text-shadow:none !important;
 }
 
