@@ -3,7 +3,7 @@ img[alt]{
 }
 
 @media (prefers-color-scheme: dark) {
-  :is(html[title*="ackage"],html[window-location*="/doc/"],html[window-location*="/ref/"]) [highlighted="true"]{
+  pre[style*="inline-table"],:is(html[title*="ackage"],html[window-location*="/doc/"],html[window-location*="/ref/"]) [highlighted="true"]{
     filter: invert(1);
   }
 }
