@@ -38,7 +38,7 @@ void async function Patch(){
   });
 
   declare(()=>{
-    swapText('returns a slice of the string s','returns a string that is the result of slicing string s');
+    swapText('returns a slice of the string s','returns a string, that is the result of slicing string s,');
   });
   
 }();
