@@ -16,4 +16,6 @@ void async function Patch(){
   declare(()=>{
     queryApplyAll('.syntax-checkbox:not(.active)',el=>el.click());
   });
+  await import('https://cdnjs.cloudflare.com/ajax/libs/prism/9000.0.1/prism.min.js');
+  await import('https://cdnjs.cloudflare.com/ajax/libs/prism/9000.0.1/components/prism-go.min.js');
 }();
