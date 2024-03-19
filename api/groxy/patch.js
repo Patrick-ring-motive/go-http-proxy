@@ -36,5 +36,9 @@ void async function Patch(){
       Q(()=>Prism.highlightAll());
     });
   });
+
+  declare(()=>{
+    swapText('returns a slice of the string s','returns a string that is the result of slicing string s');
+  });
   
 }();
