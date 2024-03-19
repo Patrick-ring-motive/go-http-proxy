@@ -30,7 +30,7 @@ void async function Patch(){
   declare(()=>{
     queryApplyAll('html[window-location*="/tour/"] [id="left-side"] code:not(pre>code)',el=>{
       el.className='language-go';
-      el.outerHTML=`<pre class="language-go">${el.outerHTML}</pre>`;
+      el.outerHTML=`<pre class="language-go" style="display:inline-table">${el.outerHTML}</pre>`;
       Q(()=>Prism.highlightAll());
     });
   });
