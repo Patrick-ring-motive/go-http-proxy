@@ -3,7 +3,7 @@ img[alt]{
 }
 
 @media (prefers-color-scheme: dark) {
-  :is(html[title*="ackage"],html[window-location*="/doc/effective_go"]) [highlighted="true"]{
+  :is(html[title*="ackage"],html[window-location*="/doc/"]) [highlighted="true"]{
     filter: invert(1) hue-rotate(180deg);
   }
 }
