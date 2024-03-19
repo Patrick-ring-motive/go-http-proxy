@@ -8,9 +8,11 @@ void async function Patch(){
       el.updateAttribute('alt','🐹');
     });
   });
-  declare(()=>{
-    selectApplyAll('img:not([natural-width])',el=>{
-        el.setAttribute('natural-width',el.naturalWidth);
+  DOMComplete(()=>{
+    declare(()=>{
+      selectApplyAll('img:not([natural-width])',el=>{
+          el.setAttribute('natural-width',el.naturalWidth);
+      });
     });
   });
   declare(()=>{
