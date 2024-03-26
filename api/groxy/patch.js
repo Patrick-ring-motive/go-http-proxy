@@ -3,6 +3,9 @@ void async function Patch(){
   if(!globalThis.declare){
     await import(`https://unpkg.com/javaxscript/framework.js?${new Date().getTime()}`);
   }
+  if(!select('link[href*="/groxy/injects-css.css"]')){
+    body().appendChild(buildElement('link',{attr:{href:"/groxy/injects-css.css",rel:"stylesheet"}}));
+  }
   declare(()=>{
     selectApplyAll('img',el=>{
       el.updateAttribute('alt','🐹');
