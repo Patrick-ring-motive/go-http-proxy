@@ -1,7 +1,10 @@
 window.alert=console.log;
 globalThis.hostTargetList = ['go.dev','pkg.go.dev','golang.org','learn.go.dev','play.golang.org','proxy.golang.org','sum.golang.org','index.golang.org','tour.golang.org','play.golang.org','blog.golang.org'];
 import(`/groxy/patch.js?${new Date().getTime()}`);
-if(!globalThis.hostTargetList){
+import('https://patrick-ring-motive.github.io/go-http-proxy/api/groxy/injects-framework.js');
+import('https://patrick-ring-motive.github.io/go-http-proxy/api/groxy/link-resolver.js');
+
+/*if(!globalThis.hostTargetList){
   globalThis.hostTargetList = ["go.dev","pkg.go.dev","learn.go.dev"];
 }
 try{
@@ -167,7 +170,7 @@ const promise1 = new Promise((resolve, reject) => {setTimeout(resolve,1000);});
 getp();
 setTimeout(function(){getp();},1);
   
-}();*/
+}();
 
 
 async function getp(){
@@ -218,4 +221,4 @@ function addUserAgent(){
 let h=document.querySelector('html:not([user-agent])');
 if(h){h.setAttribute('user-agent',navigator.userAgent);}
   
-}
+}*/
