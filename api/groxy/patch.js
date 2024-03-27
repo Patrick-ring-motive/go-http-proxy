@@ -28,7 +28,7 @@ void async function Patch(){
     let code = select(':is(code[class*="language-"], [class*="language-"] code, code[class*="lang-"], [class*="lang-"] code):not([highlighted])');
     if(code){
       Prism.highlightElement(code);
-      code.setAttribute('highlighted','true');
+      code.setAttribute('highlighted','on');
     }
   });
   declare(()=>{
