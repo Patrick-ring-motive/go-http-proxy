@@ -24,6 +24,8 @@ void async function Patch(){
   
   await import('https://cdnjs.cloudflare.com/ajax/libs/prism/9000.0.1/prism.min.js');
   await import('https://cdnjs.cloudflare.com/ajax/libs/prism/9000.0.1/components/prism-go.min.js');
+  importStyle('https://cdnjs.cloudflare.com/ajax/libs/prism/9000.0.1/themes/prism.min.css');
+  
   declare(()=>{
     let code = select(':is(code[class*="language-"], [class*="language-"] code, code[class*="lang-"], [class*="lang-"] code):not([highlighted])');
     if(code){
@@ -32,16 +34,22 @@ void async function Patch(){
     }
   });
   declare(()=>{
-    selectApplyAll(':is(html[window-location*="/tour/"] [id="left-side"],html[window-location*="/doc/"],html[window-location*="/ref/"]) pre:not(.language-go,:has(code))',el=>{
+    selectApplyAll(':is(html[window-location*="/tour/"] [id="left-side"],html:not([window-location*="/tour/"])) pre:not(.language-go,:has(code))',el=>{
       el.className='language-go';
       el.innerHTML=`<code class="language-go">${el.innerHTML}</code>`;
     });
   });
 
   declare(()=>{
-    selectApplyAll(`:is(html[window-location*="/tour/"] [id="left-side"],html[window-location*="/doc/"],html[window-location*="/ref/"]) code:not(pre>code)`,el=>{
+    selectApplyAll(`:is(html[window-location*="/tour/"] [id="left-side"],html:not([window-location*="/tour/"])) code:not(pre>code)`,el=>{
       el.className='language-go';
       el.outerHTML=`<pre class="language-go" style="display:inline-table;margin:0;padding:0;">${el.outerHTML}</pre>`;
+    });
+  });
+  
+   declare(()=>{
+    selectApplyAll(':is(html[window-location*="/tour/"] [id="left-side"],html:not([window-location*="/tour/"])) :is(pre,code):not(.language-go,:has(code.language-go))',el=>{
+      el.className='language-go';
     });
   });
 
