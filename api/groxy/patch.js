@@ -26,13 +26,17 @@ void async function Patch(){
   await import('https://cdnjs.cloudflare.com/ajax/libs/prism/9000.0.1/components/prism-go.min.js');
   importStyle('https://cdnjs.cloudflare.com/ajax/libs/prism/9000.0.1/themes/prism.min.css');
   
-  design(()=>{
-    let code = select(':is(code[class*="language-"], [class*="language-"] code, code[class*="lang-"], [class*="lang-"] code):not([highlighted])');
-    if(code){
-      Prism.highlightElement(code);
-      code.setAttribute('highlighted','on');
+  void async function(){
+    while(true){
+      await sleep(100);
+      await nextIdle();
+        let code = select(':is(code[class*="language-"], [class*="language-"] code, code[class*="lang-"], [class*="lang-"] code):not([highlighted])');
+        if(code){
+          Prism.highlightElement(code);
+          code.setAttribute('highlighted','on');
+        }
     }
-  });
+  }();
   declare(()=>{
     selectApplyAll(':is(html[window-location*="/tour/"] [id="left-side"],html:not([window-location*="/tour/"])) pre:not(.language-go,:has(code))',el=>{
       el.className='language-go';
