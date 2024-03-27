@@ -25,10 +25,16 @@ void async function Patch(){
   await import('https://cdnjs.cloudflare.com/ajax/libs/prism/9000.0.1/prism.min.js');
   await import('https://cdnjs.cloudflare.com/ajax/libs/prism/9000.0.1/components/prism-go.min.js');
   declare(()=>{
+    let code = select(':is(code[class*="language-"], [class*="language-"] code, code[class*="lang-"], [class*="lang-"] code):not([highlighted])');
+    if(code){
+      Prism.highlightElement(code);
+      code.setAttribute('highlighted','true');
+    }
+  });
+  declare(()=>{
     selectApplyAll(':is(html[window-location*="/tour/"] [id="left-side"],html[window-location*="/doc/"],html[window-location*="/ref/"]) pre:not(.language-go,:has(code))',el=>{
       el.className='language-go';
       el.innerHTML=`<code class="language-go">${el.innerHTML}</code>`;
-      Q(()=>Prism.highlightAll());
     });
   });
 
@@ -36,7 +42,6 @@ void async function Patch(){
     selectApplyAll(`:is(html[window-location*="/tour/"] [id="left-side"],html[window-location*="/doc/"],html[window-location*="/ref/"]) code:not(pre>code)`,el=>{
       el.className='language-go';
       el.outerHTML=`<pre class="language-go" style="display:inline-table;margin:0;padding:0;">${el.outerHTML}</pre>`;
-      Q(()=>Prism.highlightAll());
     });
   });
 
