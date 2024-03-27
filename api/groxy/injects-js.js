@@ -158,7 +158,7 @@ const promise1 = new Promise((resolve, reject) => {setTimeout(resolve,1000);});
   }
 }
 
-void async function getPrism(){
+/*void async function getPrism(){
 
   addEventListener("DOMContentLoaded", (event) => {
     getp();
@@ -167,7 +167,7 @@ void async function getPrism(){
 getp();
 setTimeout(function(){getp();},1);
   
-}();
+}();*/
 
 
 async function getp(){
