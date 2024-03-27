@@ -38,21 +38,21 @@ void async function Patch(){
         }
     }
   }();
-  declare(()=>{
+  design(()=>{
     selectApplyAll(':is(html[window-location*="/tour/"] [id="left-side"],html:not([window-location*="/tour/"])) pre:not(.language-go,:has(code))',el=>{
       el.className='language-go';
       el.innerHTML=`<code class="language-go">${el.innerHTML}</code>`;
     });
   });
 
-  declare(()=>{
+  design(()=>{
     selectApplyAll(`:is(html[window-location*="/tour/"] [id="left-side"],html:not([window-location*="/tour/"])) code:not(pre>code)`,el=>{
       el.className='language-go';
       el.outerHTML=`<pre class="language-go" style="display:inline-table;margin:0;padding:0;">${el.outerHTML}</pre>`;
     });
   });
   
-   declare(()=>{
+   design(()=>{
     selectApplyAll(':is(html[window-location*="/tour/"] [id="left-side"],html:not([window-location*="/tour/"])) :is(pre,code):not(.language-go,:has(code.language-go))',el=>{
       el.className='language-go';
     });
