@@ -17,8 +17,6 @@ void async function InjectsWithFramework(){
   if(!select('[id="injectcss"]')){
     body().appendChild(buildElement('style',{values:{id:'injectcss',innerHTML:await(await fetch('/groxy/injects.css')).text()}}));
   }
-  select('.Hero-blurb>h1').innerText='Go Bananas';
-  select('.Hero-blurb>h1').style.visibility='visible';
   declare(()=>{
     if(!`${select('.Hero-blurb>h1')?.innerText}`.includes('Go Bananas')){
       select('.Hero-blurb>h1')?.setValue?.('innerText','Go Bananas');
