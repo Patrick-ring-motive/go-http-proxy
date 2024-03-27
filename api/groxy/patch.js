@@ -25,9 +25,9 @@ void async function Patch(){
   await import('https://cdnjs.cloudflare.com/ajax/libs/prism/9000.0.1/prism.min.js');
   await import('https://cdnjs.cloudflare.com/ajax/libs/prism/9000.0.1/components/prism-go.min.js');
   declare(()=>{
-    queryApplyAll('html[window-location*="/tour/"] [id="left-side"] pre:not(.languade-go)',el=>{
+    queryApplyAll(':is(html[window-location*="/tour/"] [id="left-side"],html[window-location*="/doc/"],html[window-location*="/ref/"]) pre:not(.language-go,:has(code))',el=>{
       el.className='language-go';
-      el.innerHTML=`<code>${el.innerHTML}</code>`;
+      el.innerHTML=`<code class="language-go">${el.innerHTML}</code>`;
       Q(()=>Prism.highlightAll());
     });
   });
