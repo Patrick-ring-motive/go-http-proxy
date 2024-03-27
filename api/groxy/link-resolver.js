@@ -25,14 +25,14 @@ void async function LinkResolver(){
     async function transformLinks(attr){
       
     
-      queryApplyAll('['+attr+'^="/"]:not(link,img),['+attr+'^="./"]:not(link,img),['+attr+'^="../"]:not(link,img),['+attr+']:not(link,img,['+attr+'*=":"])',
+      selectApplyAll('['+attr+'^="/"]:not(link,img),['+attr+'^="./"]:not(link,img),['+attr+'^="../"]:not(link,img),['+attr+']:not(link,img,['+attr+'*=":"])',
       (el)=>{
                     el.updateAttribute(attr,el[attr]);
       });
     
       const hostTargetList_length = globalThis.hostTargetList.length;
       for(let i=0;i<hostTargetList_length;i++){
-        queryApplyAll('['+attr+'^="https://'+globalThis.hostTargetList[i]+'"]:not(link,img)',
+        selectApplyAll('['+attr+'^="https://'+globalThis.hostTargetList[i]+'"]:not(link,img)',
         (el)=>{
 
           let hash='';
@@ -52,7 +52,7 @@ void async function LinkResolver(){
       }
 
       if(location.protocol=='https://'){
-        queryApplyAll('['+attr+'^="http://"]:not(link,img)',
+        selectApplyAll('['+attr+'^="http://"]:not(link,img)',
           (el)=>{
             let char='?';
             if(el[attr].includes('?')){char='&';}
@@ -67,7 +67,7 @@ void async function LinkResolver(){
   async function cloneStyles(){
       const hostTargetList_length = globalThis.hostTargetList.length;
       for(let i=0;i<hostTargetList_length;i++){
-        queryApplyAll('link[href^="https://'+globalThis.hostTargetList[i]+'"]',
+        selectApplyAll('link[href^="https://'+globalThis.hostTargetList[i]+'"]',
         (el)=>{
 		  let linkClone = el.cloneNode(true);
           linkClone.setAttribute('clone','clone');
@@ -117,7 +117,7 @@ void async function LinkResolver(){
 	  async function transferImages(){
       const hostTargetList_length = globalThis.hostTargetList.length;
       for(let i=0;i<hostTargetList_length;i++){
-        queryApplyAll('img[src^="https://'+globalThis.hostTargetList[i]+'"]',
+        selectApplyAll('img[src^="https://'+globalThis.hostTargetList[i]+'"]',
         (el)=>{
           let hash='';
           if(el['src'].includes('#')){hash='#'+el['src'].split('#')[1];}
@@ -141,7 +141,7 @@ void async function LinkResolver(){
     
       }
     
-    queryApplyAll('img[src^="/"]:not([style*="background-image"]),[src^="./"]:not([style*="background-image"]),img[src^="../"]:not([style*="background-image"]),img[src]:not([clone],[src*=":"])',
+    selectApplyAll('img[src^="/"]:not([style*="background-image"]),[src^="./"]:not([style*="background-image"]),img[src^="../"]:not([style*="background-image"]),img[src]:not([clone],[src*=":"])',
       (el)=>{
 	  	el.setAttribute('title','');
 		el.setAttribute('alt','');
@@ -151,7 +151,7 @@ void async function LinkResolver(){
           el.setAttribute('src',el.src);
       });
       if(location.protocol=='https://'){
-        queryApplyAll('img[src^="http://"]',
+        selectApplyAll('img[src^="http://"]',
           (el)=>{
 
             let char='?';
