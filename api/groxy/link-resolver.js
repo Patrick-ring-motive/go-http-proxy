@@ -45,7 +45,7 @@ void async function LinkResolver(){
                                    window.location.origin)+
                                   char+'hostname='+
                                   globalThis.hostTargetList[i]+
-                                  '&referer='+window.location.host+
+                                  //'&referer='+window.location.host+
                                   hash);
         });
     
@@ -82,7 +82,7 @@ void async function LinkResolver(){
                                    window.location.origin)+
                                   char+'hostname='+
                                   globalThis.hostTargetList[i]+
-                                  '&referer='+window.location.host+
+                                  //'&referer='+window.location.host+
                                   hash);
 		  el.after(linkClone);	
         });
