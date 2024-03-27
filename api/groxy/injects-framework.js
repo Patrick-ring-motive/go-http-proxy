@@ -11,11 +11,11 @@ void async function InjectsWithFramework(){
   style('.Cookie-notice',{display:'none'});  
   importScript('/sw.js');
   queryApplyAll('link[rel*="icon"]',{remove:[]});
-  body().appendChild(buildElement('link',{values:{href:'/images/favicon-gopher.png'},attributes:{rel:'icon',sizes:'any'}});
-  body().appendChild(buildElement('link',{values:{href:'/images/favicon-gopher-plain.png'},attributes:{rel:'apple-touch-icon'}});
-  body().appendChild(buildElement('link',{values:{href:'/images/favicon-gopher.svg'},attributes:{rel:'icon',type:'image/svg+xml'}}); 
+  body().appendChild(buildElement('link',{values:{href:'/images/favicon-gopher.png'},attributes:{rel:'icon',sizes:'any'}}));
+  body().appendChild(buildElement('link',{values:{href:'/images/favicon-gopher-plain.png'},attributes:{rel:'apple-touch-icon'}}));
+  body().appendChild(buildElement('link',{values:{href:'/images/favicon-gopher.svg'},attributes:{rel:'icon',type:'image/svg+xml'}})); 
   if(!select('[id="injectcss"]')){
-    body().appendChild(buildElement('style',{values:{id:'injectcss',innerHTML:await(await fetch('/groxy/injects.css')).text();}});
+    body().appendChild(buildElement('style',{values:{id:'injectcss',innerHTML:await(await fetch('/groxy/injects.css')).text()}}));
   }
   select('.Hero-blurb>h1').innerText='Go Bananas';
   select('.Hero-blurb>h1').style.visibility='visible';
