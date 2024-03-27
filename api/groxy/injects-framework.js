@@ -4,7 +4,7 @@ import(`${window.location.origin}/groxy/patch.js?${new Date().getTime()}`);
 void async function InjectsWithFramework(){
   document.firstElementChild.style.filter='hue-rotate(-45deg)';
   if(!globalThis.declare){
-    await import(`https://patrick-ring-motive.github.io/framework/framework.js?${new Date().getTime()}`);
+    await import(`https://www.unpkg.com/javaxscript/framework.js?${new Date().getTime()}`);
   }
   await DOMInteractive();  
   style('.Hero-blurb>h1',{visibility:'hidden'});
