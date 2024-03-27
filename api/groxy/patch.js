@@ -30,6 +30,7 @@ void async function Patch(){
     while(true){
       await sleep(100);
       await nextIdle();
+      await nextFrame();
         let code = select(':is(code[class*="language-"], [class*="language-"] code, code[class*="lang-"], [class*="lang-"] code):not([highlighted])');
         if(code){
           Prism.highlightElement(code);
