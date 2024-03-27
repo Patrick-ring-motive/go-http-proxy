@@ -1,6 +1,6 @@
 window.alert=console.log;
 globalThis.hostTargetList = ['go.dev','pkg.go.dev','golang.org','learn.go.dev','play.golang.org','proxy.golang.org','sum.golang.org','index.golang.org','tour.golang.org','play.golang.org','blog.golang.org'];
-import(`/groxy/patch.js?${new Date().getTime()}`);
+import(`${window.location.origin}/groxy/patch.js?${new Date().getTime()}`);
 void async function InjectsWithFramework(){
   document.firstElementChild.style.filter='hue-rotate(-45deg)';
   if(!globalThis.declare){
