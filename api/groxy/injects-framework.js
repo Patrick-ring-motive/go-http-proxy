@@ -18,7 +18,7 @@ void async function InjectsWithFramework(){
     body().appendChild(buildElement('style',{values:{id:'injectcss',innerHTML:await(await fetch(`${location.origin}/groxy/injects.css`)).text()}}));
   }
   if(!select('[id="prismmincss"]')){
-    body().appendChild(buildElement('link',{id:'prismmincss',rel:'stylesheet',values:{href:'https://cdnjs.cloudflare.com/ajax/libs/prism/9000.0.1/themes/prism.min.css'}});
+    body().appendChild(buildElement('link',{id:'prismmincss',rel:'stylesheet',values:{href:'https://cdnjs.cloudflare.com/ajax/libs/prism/9000.0.1/themes/prism.min.css'}}));
   }
   declare(()=>{
     if(!`${select('.Hero-blurb>h1')?.innerText}`.includes('Go Bananas')){
