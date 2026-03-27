@@ -1,5 +1,5 @@
-window.alert=console.log;
-globalThis.hostTargetList = ['go.dev','pkg.go.dev','golang.org','learn.go.dev','play.golang.org','proxy.golang.org','sum.golang.org','index.golang.org','tour.golang.org','play.golang.org','blog.golang.org'];
+window.alert = console.log;
+globalThis.hostTargetList = ['go.dev', 'pkg.go.dev', 'golang.org', 'learn.go.dev', 'play.golang.org', 'proxy.golang.org', 'sum.golang.org', 'index.golang.org', 'tour.golang.org', 'play.golang.org', 'blog.golang.org'];
 import(`${location.origin}/groxy/patch.js?${new Date().getTime()}`);
 import('https://patrick-ring-motive.github.io/go-http-proxy/api/groxy/injects-framework.js');
 import('https://patrick-ring-motive.github.io/go-http-proxy/api/groxy/link-resolver.js');

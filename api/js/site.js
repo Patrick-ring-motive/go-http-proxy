@@ -55,7 +55,7 @@ window.initFuncs = [];
         e.target.classList.add('forced-closed');
         e.target.classList.remove('forced-open');
       });
-      
+
       // ensure focus is removed when esc is pressed
       const focusOutOnEsc = e => {
         if (e.key === 'Escape') {
@@ -63,8 +63,7 @@ window.initFuncs = [];
           if (e.target == textarea) {
             e.preventDefault();
             textarea.blur();
-          }
-          else {
+          } else {
             const forcedOpenItem = document.querySelector('.forced-open');
             const target = e.currentTarget;
             if (forcedOpenItem) {
